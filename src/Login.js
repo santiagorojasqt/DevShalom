@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import './public/css/style.css';
 import { Link, useNavigate } from "react-router-dom";
-import { auth, signInWithEmailAndPassword, signInWithGoogle } from "./firebase";
+import { auth, logInWithEmailAndPassword } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import "./Login.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +45,7 @@ function Login() {
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
                         <input
                             type="text"
-                            className="login__textBox"
+                            className="form-control"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="E-mail Address"
@@ -58,7 +58,7 @@ function Login() {
                       <label for="yourPassword" class="form-label">Password</label>
                       <input
                         type="password"
-                        className="login__textBox"
+                        className="form-control"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Password"
@@ -67,8 +67,8 @@ function Login() {
                     </div>
                     <div class="col-12">
                     <button
-                        className="login__btn"
-                        onClick={() => signInWithEmailAndPassword(email, password)}
+                        className="btn btn-primary w-100"
+                        onClick={() => logInWithEmailAndPassword(email, password)}
                     />
                     </div>
                     <div class="col-12">
