@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import './public/css/style.css';
 import { Link, useHistory } from "react-router-dom";
+
+import './public/css/style.css';
 import {
   auth,
   registerWithEmailAndPassword,
 } from "./firebase";
-import "./Register.css";
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +15,7 @@ function Register() {
   const history = useHistory();
   const register = () => {
     if (!name) alert("Please enter name");
-    registerWithEmailAndPassword(name, email, password);
+        registerWithEmailAndPassword(name, email, password);
   };
   useEffect(() => {
     if (loading) return;
