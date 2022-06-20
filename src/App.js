@@ -17,6 +17,10 @@ import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./ProtectedRoute";
 import Branch from './Branch';
 import BranchCreate from './BranchCreate';
+import Contract from './Contract';
+import Delivery from './Delivery';
+import Services from './Services';
+import Requirement from './Requirement';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -43,6 +47,27 @@ function App() {
                   <BranchCreate />
                 </ProtectedRoute>
               } />
+              <Route exact path="/Contract" element={
+                <ProtectedRoute>
+                  <Contract />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/Delivery" element={
+                <ProtectedRoute>
+                  <Delivery />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/Service" element={
+                <ProtectedRoute>
+                  <Services />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/Requirement" element={
+                <ProtectedRoute>
+                  <Requirement />
+                </ProtectedRoute>
+              } />
+
             </Routes>
           </AuthProvider>
         </Router>
