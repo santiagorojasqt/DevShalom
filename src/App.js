@@ -15,7 +15,7 @@ import {auth} from './firebase'
 import {useState,useEffect} from 'react'
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./ProtectedRoute";
-
+import Branch from './Branch';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -29,6 +29,11 @@ function App() {
               <Route exact path="/dashboard" element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/Branch" element={
+                <ProtectedRoute>
+                  <Branch />
                 </ProtectedRoute>
               } />
             </Routes>

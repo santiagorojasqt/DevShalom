@@ -1,6 +1,7 @@
 import { useAuth } from "./context/AuthContext";
 import {auth, functions} from './firebase';
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { render } from "react-dom";
 import Loading from "./loading";
@@ -12,14 +13,24 @@ function Sidebar() {
   
   const getMenuItem = async()=>{
     try{
+        
         setLoading(true);
-        if(menuItemsHtml != null)
+        console.log('The local storage');
+        console.log(window.localStorage.getItem('MenuItem'));
+        if(window.localStorage.getItem('MenuItem')){
+            menuItemsHtml = JSON.parse(window.localStorage.getItem("MenuItem"));
+            setLoading(false);
             return;
+        }
+        if(menuItemsHtml && menuItemsHtml.size()>0){
+            setLoading(false);
+            return;
+        }
         else{
             menuItemsHtml =[];
             let tokenData = await auth.currentUser.getIdToken();
             await axios.post(
-            'http://localhost:5001/shalom-103df/us-central1/app/getAvailableModules',
+            'https://us-central1-shalom-103df.cloudfunctions.net/app/getAvailableModules',
             { example: 'data' },
             { headers: { 
                 'Content-Type': 'application/json',
@@ -31,10 +42,13 @@ function Sidebar() {
                 resp.data.Objects.forEach(element => {
                     console.log(element._fieldsProto.ObjectName.stringValue);
                     if(element._fieldsProto.Read.booleanValue){
-                        menuItemsHtml.push(String(element._fieldsProto.ObjectName.stringValue));
+                        menuItemsHtml.push({
+                            "value":element._fieldsProto.ObjectName.stringValue,
+                            "url":element._fieldsProto.Url.stringValue
+                        });
                     }
                 });
-                console.log(menuItemsHtml);
+                window.localStorage.setItem("MenuItem", JSON.stringify(menuItemsHtml));
                 setLoading(false);
             })
             .catch(function(err){
@@ -56,13 +70,14 @@ function Sidebar() {
     const handleLogout = async () => {
       try {
         await logout();
+        window.localStorage.clear();
       } catch (error) {
         console.error(error.message);
       }
     };
 
     if(loading){
-        return <Loading />;
+        return <Loading  type="String" color="#000000" />;
     }
     else{
         return (
@@ -71,19 +86,17 @@ function Sidebar() {
             <ul className="sidebar-nav" id="sidebar-nav">
 
             <li className="nav-item">
-                <a className="nav-link collapsed" href="index.html">
-                <i className="bi bi-grid"></i>
-                <span>Dashboard</span>
-                </a>
+                <Link to="/Dashboard" className="nav-link collapsed" >
+                    <i className="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </Link>
             </li>
 
             <li className="nav-item">
                 <a className="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i className="bi bi-menu-button-wide"></i><span>Gestor de Pedidos</span><i className="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="components-nav" className="nav-content collapse show" data-bs-parent="#sidebar-nav">
-                    {menuItemsHtml && <MenuComponent Objects={menuItemsHtml}/>}
-                </ul>
+                {menuItemsHtml && <MenuComponent listValue={menuItemsHtml}/>}
             </li>
 
             <li className="nav-heading">Pages</li>

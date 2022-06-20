@@ -34,10 +34,10 @@ function Header() {
 
         <li className="nav-item dropdown">
 
-          <a className="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i className="bi bi-bell"></i>
-            <span className="badge bg-primary badge-number">4</span>
-          </a>
+            <a className="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+              <i className="bi bi-bell"></i>
+              <span className="badge bg-primary badge-number">4</span>
+            </a>
 
           <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li className="dropdown-header">
@@ -106,7 +106,7 @@ function Header() {
           </ul>
 
         </li>
-        
+
         <li className="nav-item dropdown pe-3">
 
           <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">

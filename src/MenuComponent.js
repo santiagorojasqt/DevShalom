@@ -1,18 +1,26 @@
 
+
+import { Link, useNavigate } from "react-router-dom";
 function ListItem(props) {
   // Correcto! No hay necesidad de especificar la key aquí:
-  return <li>{props.value}</li>;
+  console.log(props.url);
+  return <li> <Link to={props.url} className="active" ><i class="bi bi-circle"></i><span>{props.value}</span></Link></li>;
 }
 
-function MenuComponent(Objects) {
-  console.log(Objects);
-  const listItems = Object.values(Objects).map((element) =>
-    console.log(element) &&
-    // Correcto! La key debería ser especificada dentro del array.
-    <ListItem key={element.toString()} value={element} />
-  );
+function MenuComponent(props) {
+  console.log(props.listValue);
+  console.log(props);
+  let list = [];
+  props.listValue.forEach(element => {
+    console.log(element);
+    list.push(<ListItem key={element.url} value={element.value} url={element.url}/>);
+  });
+  
+  console.log(list);
   return (
-    {listItems}
+    <ul id="components-nav" className="nav-content collapse show" data-bs-parent="#sidebar-nav">
+      {list}
+    </ul>
   );
 
 }
