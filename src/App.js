@@ -16,6 +16,7 @@ import {useState,useEffect} from 'react'
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./ProtectedRoute";
 import Branch from './Branch';
+import BranchCreate from './BranchCreate';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -34,6 +35,12 @@ function App() {
               <Route exact path="/Branch" element={
                 <ProtectedRoute>
                   <Branch />
+                </ProtectedRoute>
+              } />
+
+               <Route exact path="/Branch/Create" element={
+                <ProtectedRoute>
+                  <BranchCreate />
                 </ProtectedRoute>
               } />
             </Routes>

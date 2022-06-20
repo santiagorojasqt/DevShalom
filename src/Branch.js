@@ -19,8 +19,10 @@ import { Helmet } from 'react-helmet';
 import Footer from './Footer';
 import {auth, functions} from './firebase';
 import Loading from "./loading";
+import { useNavigate } from 'react-router-dom'
 let allBranches = null
 function Branch() {
+  const navigate = useNavigate()
   const [loading,setLoading] = useState(true);
   const [tooltip, showTooltip] = useState(true);
   const getAllBranches = async()=>{
@@ -43,6 +45,10 @@ function Branch() {
         console.log(err);
         setLoading(false);
     });
+  }
+
+  const newBranch = async()=>{
+    navigate('/Branch/Create')
   }
   useEffect(() => {
     getAllBranches();
@@ -72,8 +78,10 @@ function Branch() {
                 <div class="col-lg-12">
                   <div class="card">
                     <div class="card-body">
+                      <div className='card float-right'>
+                        <button className='btn btn-primary' onClick={newBranch}>Crear sede</button>
+                      </div>
                       <h5 class="card-title">Todas Las Sedes</h5>
-                      
                       <table className='table thead-light'>
                         <thead>
                           <tr>
