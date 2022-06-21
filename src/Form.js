@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+let props ={};
 function Form(props) {
   console.log(props.values);
   console.log(props.values[0]);
@@ -6,6 +7,9 @@ function Form(props) {
   const handleChange = async(e) => {
   }
   const handleSave = async(e) => {
+    e.preventDefault();
+    e.preventDefault();
+    console.log(e.target[0].value)
   }
   const goToBranch = async()=>{
     navigate(props.goTo);

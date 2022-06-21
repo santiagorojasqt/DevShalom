@@ -19,13 +19,19 @@ import Branch from './Branch';
 import BranchCreate from './BranchCreate';
 import Contract from './Contract';
 import Delivery from './Delivery';
-import Services from './Services';
 import Requirement from './Requirement';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import ContractCreate from './ContractCreate';
 import Footer from './Footer';
 import ServiceCreate from './ServiceCreate';
+import DeliveryCreate from './DeliveryCreate';
+import Contact from './Contact';
+import ContactCreate from './ContactCreate';
+import User from './User';
+import UserCreate from './UserCreate';
+import Service from './Service';
+import RequirementCreate from './RequirementCreate';
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
   return (
@@ -49,10 +55,19 @@ function App() {
                   <Branch />
                 </ProtectedRoute>
               } />
-
                <Route exact path="/Branch/Create/"  element={
                 <ProtectedRoute>
                   <BranchCreate key='BranchCreation' />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/Contact" element={
+                <ProtectedRoute>
+                  <Contact />
+                </ProtectedRoute>
+              } />
+               <Route exact path="/Contact/Create/"  element={
+                <ProtectedRoute>
+                  <ContactCreate key='ContactCreation' />
                 </ProtectedRoute>
               } />
               <Route exact path="/Contract" element={
@@ -65,14 +80,29 @@ function App() {
                   <ContractCreate />
                 </ProtectedRoute>
               } />
+              <Route exact path="/User" element={
+                <ProtectedRoute>
+                  <User />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/User/Create" element={
+                <ProtectedRoute>
+                  <UserCreate />
+                </ProtectedRoute>
+              } />
               <Route exact path="/Delivery" element={
                 <ProtectedRoute>
                   <Delivery />
                 </ProtectedRoute>
               } />
+              <Route exact path="/Delivery/Create" element={
+                <ProtectedRoute>
+                  <DeliveryCreate />
+                </ProtectedRoute>
+              } />
               <Route exact path="/Service" element={
                 <ProtectedRoute>
-                  <Services />
+                  <Service />
                 </ProtectedRoute>
               } />
               <Route exact path="/Service/Create" element={
@@ -83,6 +113,11 @@ function App() {
               <Route exact path="/Requirement" element={
                 <ProtectedRoute>
                   <Requirement />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/Requirement/Create" element={
+                <ProtectedRoute>
+                  <RequirementCreate />
                 </ProtectedRoute>
               } />
               

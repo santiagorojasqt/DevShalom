@@ -20,16 +20,16 @@ import Footer from './Footer';
 import {auth, functions} from './firebase';
 import Loading from "./loading";
 import { useNavigate } from 'react-router-dom'
-let allBranches = null
-function Branch() {
+let allUsers = null
+function User() {
   const navigate = useNavigate()
   const [loading,setLoading] = useState(true);
   const [tooltip, showTooltip] = useState(true);
-  const getAllBranches = async()=>{
+  const getAllUsers = async()=>{
     let tokenData = await auth.currentUser.getIdToken();
     setLoading(true);
     await axios.post(
-    'https://us-central1-shalom-103df.cloudfunctions.net/app/getAllBranches',
+    'https://us-central1-shalom-103df.cloudfunctions.net/app/getAllUsers',
     { example: 'data' },
     { headers: { 
         'Content-Type': 'application/json',
@@ -37,21 +37,21 @@ function Branch() {
     } }
     ).then(function(resp){
         console.log(resp.data);
-        allBranches = resp.data;
+        allUsers = resp.data;
         setLoading(false);
     })
     .catch(function(err){
-        allBranches=[];
+        allUsers=[];
         console.log(err);
         setLoading(false);
     });
   }
 
-  const newBranch = async()=>{
-    navigate('/Branch/Create')
+  const newUser = async()=>{
+    navigate('/User/Create')
   }
   useEffect(() => {
-    getAllBranches();
+    getAllUsers();
   }, []);
   if(loading){
     return <Loading  type="String" color="#000000" />;
@@ -59,16 +59,14 @@ function Branch() {
   else{
     return (
       <div className="App">
-        <Header/>
-        <Sidebar />
           <main id="main" class="main">
             <div class="pagetitle">
-              <h1>Sedes</h1>
+              <h1>Usuarios</h1>
               <nav>
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                   <li class="breadcrumb-item">Pedidos</li>
-                  <li class="breadcrumb-item active">Sede</li>
+                  <li class="breadcrumb-item active">Usuario</li>
                 </ol>
               </nav>
             </div>
@@ -79,9 +77,9 @@ function Branch() {
                   <div class="card">
                     <div class="card-body">
                       <div className='card float-right'>
-                        <button className='btn btn-primary' onClick={newBranch}>Crear sede</button>
+                        <button className='btn btn-primary' onClick={newUser}>Crear Usuario</button>
                       </div>
-                      <h5 class="card-title">Todas Las Sedes</h5>
+                      <h5 class="card-title">Todos Los Usuarios</h5>
                       <table className='table thead-light'>
                         <thead>
                           <tr>
@@ -98,7 +96,7 @@ function Branch() {
                           </tr>
                         </thead>
                         <tbody>
-                          {allBranches && allBranches.map(item => {
+                          {allUsers && allUsers.map(item => {
                             return (
                               <tr key={item._ref._path.segments[1]}>
                                 <td scope="row">{ item._fieldsProto['Direccion'].stringValue }</td>
@@ -178,10 +176,9 @@ function Branch() {
               </div>
             </section>
           </main>
-        <Footer/>
       </div>
     )
   }
   
 }
-export default Branch;
+export default User;

@@ -62,11 +62,9 @@ function Requirement() {
   else{
     return (
       <div className="App">
-        <Header/>
-        <Sidebar />
           <main id="main" class="main">
             <div class="pagetitle">
-              <h1>Sedes</h1>
+              <h1>Requerimientos</h1>
               <nav>
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -220,7 +218,6 @@ function Requirement() {
               </div>
             </section>
           </main>
-        <Footer/>
       </div>
     )
   }

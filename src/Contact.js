@@ -61,12 +61,12 @@ function Contact() {
       <div className="App">
           <main id="main" class="main">
             <div class="pagetitle">
-              <h1>Sedes</h1>
+              <h1>Contactos</h1>
               <nav>
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                   <li class="breadcrumb-item">Pedidos</li>
-                  <li class="breadcrumb-item active">Sede</li>
+                  <li class="breadcrumb-item active">Contacto</li>
                 </ol>
               </nav>
             </div>
@@ -77,9 +77,9 @@ function Contact() {
                   <div class="card">
                     <div class="card-body">
                       <div className='card float-right'>
-                        <button className='btn btn-primary' onClick={newContact}>Crear sede</button>
+                        <button className='btn btn-primary' onClick={newContact}>Crear Contacto</button>
                       </div>
-                      <h5 class="card-title">Todas Las Sedes</h5>
+                      <h5 class="card-title">Todas Las Contactos</h5>
                       <table className='table thead-light'>
                         <thead>
                           <tr>

@@ -64,8 +64,6 @@ function Service() {
   else{
     return (
       <div className="App">
-        <Header/>
-        <Sidebar />
           <main id="main" class="main">
             <div class="pagetitle">
               <h1>Servicios</h1>
@@ -163,7 +161,6 @@ function Service() {
               </div>
             </section>
           </main>
-        <Footer/>
       </div>
     )
   }

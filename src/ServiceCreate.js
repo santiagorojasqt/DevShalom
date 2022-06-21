@@ -7,42 +7,50 @@ import './public/vendor/quill/quill.bubble.css';
 import './public/vendor/remixicon/remixicon.css';
 import './public/vendor/simple-datatables/style.css';
 import './public/css/style.css';
+import Sidebar from './Sidebar';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import Header from './Header';
+import Footer from './Footer';
 import {auth} from './firebase';
 import Loading from "./loading";
 import Form from './Form';
-import { useLocation } from 'react-router-dom'
+import { useNavigate,useLocation } from 'react-router-dom'
 
-let dataRetrieved = false;
+let serviceDataRetrieved = false;
 let title;
-let formData;
+let serviceFormData;
 let location;
 function ServiceCreate() {
-  const [loading,setLoading] = useState(false);
+  console.log('mounted');
+  console.log('mounted');
+  
+  const [serviceLoading,setserviceLoading] = useState(false);
+  console.log('mounted');
   location = useLocation()
-  if(!loading&& !formData) setLoading(true);
+  console.log('mounted');
+  const navigate2 = useNavigate()
+  console.log('mounted');
+  
   const getFieldsForObject = async()=>{
-    
+    setserviceLoading(true);
     if(window.localStorage.getItem('ServiceFormData')){
-      setLoading(false);
-      formData = JSON.parse(window.localStorage.getItem("ServiceFormData"));
-      console.log(formData);
-      dataRetrieved = true;
-      setLoading(false);
+      serviceFormData = JSON.parse(window.localStorage.getItem("ServiceFormData"));
+      console.log(serviceFormData);
+      setserviceLoading(false);
     }
     else{
       let tokenData = await auth.currentUser.getIdToken();
       await axios.post(
-      'https://us-central1-shalom-103df.cloudfunctions.net/app/getFieldsForObject',
+      'http://localhost:5001/shalom-103df/us-central1/app/getFieldsForObject',
       { "objectReference" : 'Objects/E6wrMTVA8WG9b63bDyM2',"profileReference":'Profile Object Permissions/kB69jxsKuyTZw9mHuXI5' },
       { headers: { 
           'Content-Type': 'application/json',
           'Authorization':  'Bearer '+tokenData
-      } }
+      } } 
       ).then(function(resp){
-          formData = {};
+        serviceFormData = {};
           console.log(resp);
           for(const element in resp.data){
             const dataElement = resp.data[element];
@@ -52,8 +60,8 @@ function ServiceCreate() {
               dataElement._fieldsProto.Type.stringValue = 'ComboBox';
             }
             
-            if(formData[dataElement._fieldsProto.Type.stringValue]){
-              formData[dataElement._fieldsProto.Type.stringValue].push({
+            if(serviceFormData[dataElement._fieldsProto.Type.stringValue]){
+              serviceFormData[dataElement._fieldsProto.Type.stringValue].push({
                   Name:dataElement._fieldsProto.Name.stringValue,
                   Type:dataElement._fieldsProto.Type.stringValue,
                   Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
@@ -62,7 +70,7 @@ function ServiceCreate() {
               });
             }
             else{
-              formData[dataElement._fieldsProto.Type.stringValue] = [{
+              serviceFormData[dataElement._fieldsProto.Type.stringValue] = [{
                 Name:dataElement._fieldsProto.Name.stringValue,
                 Type:dataElement._fieldsProto.Type.stringValue,
                 Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
@@ -72,16 +80,16 @@ function ServiceCreate() {
             }
 
           }
-          window.localStorage.setItem("ServiceFormData", JSON.stringify(formData));
-          console.log(formData);
-          dataRetrieved = true;
-          console.log(formData)
-          setLoading(false);
+          window.localStorage.setItem("ServiceFormData", JSON.stringify(serviceFormData));
+          console.log(serviceFormData);
+          serviceDataRetrieved = true;
+          console.log(serviceFormData)
+          setserviceLoading(false);
       })
       .catch(function(err){
           console.log(err);
-          dataRetrieved = true;
-          setLoading(false);
+          serviceDataRetrieved = true;
+          setserviceLoading(false);
       });
     }
   }
@@ -95,13 +103,14 @@ function ServiceCreate() {
   }
   
   useEffect(()=>{
-    if(!dataRetrieved){
+    if(!serviceDataRetrieved){
+      serviceDataRetrieved = true;
       getFieldsForObject();
       console.log('fired once');
     }
-  },[loading]);
+  },[]);
 
-  if(loading){
+  if(serviceLoading){
     return <Loading  type="String" color="#000000" />;
   }
   else{
@@ -114,7 +123,7 @@ function ServiceCreate() {
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item"><a href="index.html">Home</a></li>
                   <li className="breadcrumb-item">Pedidos</li>
-                  <li className="breadcrumb-item active">Servicios</li>
+                  <li className="breadcrumb-item active">Servicio</li>
                 </ol>
               </nav>
             </div>
@@ -125,7 +134,7 @@ function ServiceCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { formData  && formData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{} } goTo='/Contract' formData={formData} />}
+                      { serviceFormData && serviceFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Service' formData={serviceFormData} />}
                     </div>
                   </div>
                 </div>

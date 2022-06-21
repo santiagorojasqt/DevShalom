@@ -18,15 +18,15 @@ import Loading from "./loading";
 import Form from './Form';
 import { useNavigate,useLocation } from 'react-router-dom'
 
-let branchDataRetrieved = false;
+let deliveryDataRetrieved = false;
 let title;
-let branchFormData;
+let deliveryFormData;
 let location;
-function BranchCreate() {
+function DeliveryCreate() {
   console.log('mounted');
   console.log('mounted');
   
-  const [branchLoading,setbranchLoading] = useState(false);
+  const [deliveryLoading,setdeliveryLoading] = useState(false);
   console.log('mounted');
   location = useLocation()
   console.log('mounted');
@@ -34,23 +34,23 @@ function BranchCreate() {
   console.log('mounted');
   
   const getFieldsForObject = async()=>{
-    setbranchLoading(true);
-    if(window.localStorage.getItem('BranchFormData')){
-      branchFormData = JSON.parse(window.localStorage.getItem("BranchFormData"));
-      console.log(branchFormData);
-      setbranchLoading(false);
+    setdeliveryLoading(true);
+    if(window.localStorage.getItem('DeliveryFormData')){
+      deliveryFormData = JSON.parse(window.localStorage.getItem("DeliveryFormData"));
+      console.log(deliveryFormData);
+      setdeliveryLoading(false);
     }
     else{
       let tokenData = await auth.currentUser.getIdToken();
       await axios.post(
       'https://us-central1-shalom-103df.cloudfunctions.net/app/getFieldsForObject',
-      { "objectReference" : 'Objects/gC6aLoXOhzxj7O9PU8i8',"profileReference":'Profile Object Permissions/pB6eSuUiN2PDvunlRv1w' },
+      { "objectReference" : 'Objects/FTnVjMe1aBlQVjlD8QcK',"profileReference":'Profile Object Permissions/0yoELNsmUx3JSuJWyLA9' },
       { headers: { 
           'Content-Type': 'application/json',
           'Authorization':  'Bearer '+tokenData
       } }
       ).then(function(resp){
-          branchFormData = {};
+        deliveryFormData = {};
           console.log(resp);
           for(const element in resp.data){
             const dataElement = resp.data[element];
@@ -60,8 +60,8 @@ function BranchCreate() {
               dataElement._fieldsProto.Type.stringValue = 'ComboBox';
             }
             
-            if(branchFormData[dataElement._fieldsProto.Type.stringValue]){
-              branchFormData[dataElement._fieldsProto.Type.stringValue].push({
+            if(deliveryFormData[dataElement._fieldsProto.Type.stringValue]){
+              deliveryFormData[dataElement._fieldsProto.Type.stringValue].push({
                   Name:dataElement._fieldsProto.Name.stringValue,
                   Type:dataElement._fieldsProto.Type.stringValue,
                   Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
@@ -70,7 +70,7 @@ function BranchCreate() {
               });
             }
             else{
-              branchFormData[dataElement._fieldsProto.Type.stringValue] = [{
+              deliveryFormData[dataElement._fieldsProto.Type.stringValue] = [{
                 Name:dataElement._fieldsProto.Name.stringValue,
                 Type:dataElement._fieldsProto.Type.stringValue,
                 Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
@@ -80,16 +80,16 @@ function BranchCreate() {
             }
 
           }
-          window.localStorage.setItem("BranchFormData", JSON.stringify(branchFormData));
-          console.log(branchFormData);
-          branchDataRetrieved = true;
-          console.log(branchFormData)
-          setbranchLoading(false);
+          window.localStorage.setItem("DeliveryFormData", JSON.stringify(deliveryFormData));
+          console.log(deliveryFormData);
+          deliveryDataRetrieved = true;
+          console.log(deliveryFormData)
+          setdeliveryLoading(false);
       })
       .catch(function(err){
           console.log(err);
-          branchDataRetrieved = true;
-          setbranchLoading(false);
+          deliveryDataRetrieved = true;
+          setdeliveryLoading(false);
       });
     }
   }
@@ -103,29 +103,27 @@ function BranchCreate() {
   }
   
   useEffect(()=>{
-    if(!branchDataRetrieved){
-      branchDataRetrieved = true;
+    if(!deliveryDataRetrieved){
+      deliveryDataRetrieved = true;
       getFieldsForObject();
       console.log('fired once');
     }
   },[]);
 
-  if(branchLoading){
+  if(deliveryLoading){
     return <Loading  type="String" color="#000000" />;
   }
   else{
     return (
       <div className="App">
-        <Header/>
-        <Sidebar />
           <main id="main" className="main">
             <div className="pagetitle">
-              <h1>Sedes</h1>
+              <h1>Entregas</h1>
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item"><a href="index.html">Home</a></li>
                   <li className="breadcrumb-item">Pedidos</li>
-                  <li className="breadcrumb-item active">Sede</li>
+                  <li className="breadcrumb-item active">Entrega</li>
                 </ol>
               </nav>
             </div>
@@ -136,17 +134,16 @@ function BranchCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { branchFormData && branchFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Branch' object='Sede' formData={branchFormData} />}
+                      { deliveryFormData && deliveryFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Delivery' formData={deliveryFormData} />}
                     </div>
                   </div>
                 </div>
               </div>
             </section>
           </main>
-        <Footer/>
       </div>
     )
   }
   
 }
-export default BranchCreate;
+export default DeliveryCreate;

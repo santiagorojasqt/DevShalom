@@ -11,8 +11,6 @@ import Sidebar from './Sidebar';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import Header from './Header';
-import Footer from './Footer';
 import {auth} from './firebase';
 import Loading from "./loading";
 import Form from './Form';

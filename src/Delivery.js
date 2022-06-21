@@ -59,8 +59,6 @@ function Delivery() {
   else{
     return (
       <div className="App">
-        <Header/>
-        <Sidebar />
           <main id="main" class="main">
             <div class="pagetitle">
               <h1>Entregas</h1>
@@ -140,7 +138,6 @@ function Delivery() {
               </div>
             </section>
           </main>
-        <Footer/>
       </div>
     )
   }
