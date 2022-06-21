@@ -42,9 +42,9 @@ function App() {
                 </ProtectedRoute>
               } />
 
-               <Route exact path="/Branch/Create" element={
+               <Route exact path="/Branch/Create/"  element={
                 <ProtectedRoute>
-                  <BranchCreate />
+                  <BranchCreate key='BranchCreation' />
                 </ProtectedRoute>
               } />
               <Route exact path="/Contract" element={

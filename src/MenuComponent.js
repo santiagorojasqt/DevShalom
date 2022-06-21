@@ -1,6 +1,7 @@
 
 
 import { Link, useNavigate } from "react-router-dom";
+
 function ListItem(props) {
   // Correcto! No hay necesidad de especificar la key aquí:
   console.log(props.url);
@@ -15,6 +16,8 @@ function MenuComponent(props) {
     console.log(element);
     list.push(<ListItem key={element.url} value={element.value} url={element.url}/>);
   });
+
+  
   
   console.log(list);
   return (

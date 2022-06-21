@@ -818,6 +818,11 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: 7rem;
   margin-top: 1rem;
 }
+.float-left{
+  float: left;
+  margin-right: 7rem;
+  margin-top: 1rem;
+}
 
 .tableActions{
   padding: 2rem;

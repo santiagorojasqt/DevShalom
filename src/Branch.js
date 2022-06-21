@@ -19,7 +19,7 @@ import { Helmet } from 'react-helmet';
 import Footer from './Footer';
 import {auth, functions} from './firebase';
 import Loading from "./loading";
-import { useNavigate } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 let allBranches = null
 function Branch() {
   const navigate = useNavigate()
@@ -45,6 +45,10 @@ function Branch() {
         console.log(err);
         setLoading(false);
     });
+  }
+
+  const gotoCreate=(item)=>{
+    navigate('/Branch/Create',{state:item},{ replace: true });
   }
 
   const newBranch = async()=>{
@@ -129,9 +133,9 @@ function Branch() {
                                       <hr className="dropdown-divider"/>
                                     </li>
                                     <li className="dropdown-item d-flex align-items-center">
-                                      <a className="dropdown-item d-flex align-items-center"  href="users-profile.html">
-                                        <i className="bi bi-pencil-fill text-dark"></i>
-                                        <span>Modificar</span>
+                                      <a className="dropdown-item d-flex align-items-center" onClick={() => gotoCreate(item)}>
+                                          <i className="bi bi-pencil-fill text-dark"></i>
+                                          <span>Modificar</span>
                                       </a>
                                     </li>
                                     <li className="dropdown-item d-flex align-items-center">
