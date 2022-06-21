@@ -1,72 +1,77 @@
 import { useAuth } from "./context/AuthContext";
-import {auth, functions} from './firebase';
+import {auth} from './firebase';
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from 'axios';
-import { render } from "react-dom";
 import Loading from "./loading";
 import MenuComponent from "./MenuComponent";
 
 let menuItemsHtml = null;
+let gotten = false;
 function Sidebar() {
-  const [loading,setLoading] = useState(true);
-  
+  const [sideBarloading,setSideBarLoading] = useState(false);
+  const { logout, user } = useAuth();
+  if(!sideBarloading&& !menuItemsHtml && user) setSideBarLoading(true);
+  useEffect(() => {
+    console.log('fired');
+        if(!gotten && user){
+            gotten =true;
+            console.log(sideBarloading);
+            getMenuItem();
+        }
+    }, [sideBarloading]);
+  if (!user) return (<div></div>);
   const getMenuItem = async()=>{
+    console.log('Entered');
     try{
         
-        setLoading(true);
         console.log('The local storage');
         console.log(window.localStorage.getItem('MenuItem'));
         if(window.localStorage.getItem('MenuItem')){
             menuItemsHtml = JSON.parse(window.localStorage.getItem("MenuItem"));
-            setLoading(false);
-            return;
-        }
-        if(menuItemsHtml && menuItemsHtml.size()>0){
-            setLoading(false);
-            return;
+            console.log(menuItemsHtml);
+            console.log(sideBarloading);
+            setSideBarLoading(false);
         }
         else{
             menuItemsHtml =[];
             let tokenData = await auth.currentUser.getIdToken();
             await axios.post(
-            'https://us-central1-shalom-103df.cloudfunctions.net/app/getAvailableModules',
+            'http://localhost:5001/shalom-103df/us-central1/app/getAvailableModules',
             { example: 'data' },
             { headers: { 
                 'Content-Type': 'application/json',
                 'Authorization':  'Bearer '+tokenData
             } }
             ).then(function(resp){
+                console.log(resp);
                 console.log(resp.data);
                 console.log(resp.data.Objects);
-                resp.data.Objects.forEach(element => {
-                    console.log(element._fieldsProto.ObjectName.stringValue);
-                    if(element._fieldsProto.Read.booleanValue){
+                for(const element in resp.data.Objects){
+                    const elementData = resp.data.Objects[element];
+                    console.log(elementData);
+                    if(elementData._fieldsProto.Read.booleanValue){
                         menuItemsHtml.push({
-                            "value":element._fieldsProto.ObjectName.stringValue,
-                            "url":element._fieldsProto.Url.stringValue
+                            "value":elementData._fieldsProto.ObjectName.stringValue,
+                            "url":elementData._fieldsProto.Url.stringValue
                         });
                     }
-                });
+                }
                 window.localStorage.setItem("MenuItem", JSON.stringify(menuItemsHtml));
-                setLoading(false);
+                setSideBarLoading(false);
             })
             .catch(function(err){
                 console.log(err);
-                setLoading(false);
+                setSideBarLoading(false);
             });
         }
       } catch(err){
           console.log(err);
+          setSideBarLoading(false);
       }
     
     }
-
-    const { logout, user } = useAuth();
-    useEffect(() => {
-        getMenuItem();
-    }, []);
-    console.log(user);
+    
     const handleLogout = async () => {
       try {
         await logout();
@@ -75,8 +80,8 @@ function Sidebar() {
         console.error(error.message);
       }
     };
-
-    if(loading){
+    
+    if(sideBarloading){
         return <Loading  type="String" color="#000000" />;
     }
     else{

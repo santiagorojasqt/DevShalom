@@ -29,7 +29,7 @@ function Branch() {
     let tokenData = await auth.currentUser.getIdToken();
     setLoading(true);
     await axios.post(
-    'http://localhost:5001/shalom-103df/us-central1/app/getAllBranches',
+    'https://us-central1-shalom-103df.cloudfunctions.net/app/getAllBranches',
     { example: 'data' },
     { headers: { 
         'Content-Type': 'application/json',
@@ -62,9 +62,7 @@ function Branch() {
   }
   else{
     return (
-      <div className="App">
-        <Header/>
-        <Sidebar />
+      <div className="Contract">
           <main id="main" class="main">
             <div class="pagetitle">
               <h1>Sedes</h1>
@@ -182,7 +180,6 @@ function Branch() {
               </div>
             </section>
           </main>
-        <Footer/>
       </div>
     )
   }

@@ -21,13 +21,21 @@ import Contract from './Contract';
 import Delivery from './Delivery';
 import Services from './Services';
 import Requirement from './Requirement';
-
+import Sidebar from './Sidebar';
+import Header from './Header';
+import ContractCreate from './ContractCreate';
+import Footer from './Footer';
+import ServiceCreate from './ServiceCreate';
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
   return (
     <div className="App">
+        
+        
         <Router>
           <AuthProvider>
+            <Header/>
+            <Sidebar/>
             <Routes>
               <Route exact path="/" element={<Login />} />
               <Route exact path="/reset" element={<Reset />} />
@@ -52,6 +60,11 @@ function App() {
                   <Contract />
                 </ProtectedRoute>
               } />
+              <Route exact path="/Contract/Create" element={
+                <ProtectedRoute>
+                  <ContractCreate />
+                </ProtectedRoute>
+              } />
               <Route exact path="/Delivery" element={
                 <ProtectedRoute>
                   <Delivery />
@@ -62,15 +75,23 @@ function App() {
                   <Services />
                 </ProtectedRoute>
               } />
+              <Route exact path="/Service/Create" element={
+                <ProtectedRoute>
+                  <ServiceCreate />
+                </ProtectedRoute>
+              } />
               <Route exact path="/Requirement" element={
                 <ProtectedRoute>
                   <Requirement />
                 </ProtectedRoute>
               } />
-
+              
             </Routes>
+            
           </AuthProvider>
+          
         </Router>
+        <Footer/>
     </div>
   );
 }

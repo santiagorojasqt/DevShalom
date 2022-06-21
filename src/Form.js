@@ -8,7 +8,7 @@ function Form(props) {
   const handleSave = async(e) => {
   }
   const goToBranch = async()=>{
-    navigate('/Branch')
+    navigate(props.goTo);
   }
   return(
     <form>

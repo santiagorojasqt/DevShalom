@@ -4,169 +4,196 @@ import message1 from './public/img/messages-1.jpg';
 import message2 from './public/img/messages-2.jpg';
 import message3 from './public/img/messages-3.jpg';
 import profileImg from './public/img/profile-img.jpg';
+import { Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+import axios from 'axios';
+import {auth, functions} from './firebase';
+
 function Header() {
+  const { user, loading } = useAuth();
+  const validToken = async()=>{
+    let tokenData = await auth.currentUser.getIdToken();
+    await axios.post(
+      'https://us-central1-shalom-103df.cloudfunctions.net/app/ValidateToken',
+      { example: 'data' },
+      { headers: { 
+          'Content-Type': 'application/json',
+          'Authorization':  'Bearer '+tokenData
+      } }
+      ).then(function(resp){
+          console.log(resp.data);
+          return resp;
+      })
+      .catch(function(err){
+          console.log(err);
+      });
+  }
+  if (!user || !validToken()) return (<div></div>);
+  else{
     return (
-        <header id="header" className="header fixed-top d-flex align-items-center">
+      <header id="header" className="header fixed-top d-flex align-items-center">
 
-    <div className="d-flex align-items-center justify-content-between">
-      <a href="index.html" className="logo d-flex align-items-center">
-        <img src={logo} alt=""/>
-        <span className="d-none d-lg-block">NiceAdmin</span>
-      </a>
-      <i className="bi bi-list toggle-sidebar-btn"></i>
-    </div>
+      <div className="d-flex align-items-center justify-content-between">
+        <a href="index.html" className="logo d-flex align-items-center">
+          <img src={logo} alt=""/>
+          <span className="d-none d-lg-block">NiceAdmin</span>
+        </a>
+        <i className="bi bi-list toggle-sidebar-btn"></i>
+      </div>
 
-    <div className="search-bar">
-      <form className="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword"/>
-        <button type="submit" title="Search"><i className="bi bi-search"></i></button>
-      </form>
-    </div>
+      <div className="search-bar">
+        <form className="search-form d-flex align-items-center" method="POST" action="#">
+          <input type="text" name="query" placeholder="Search" title="Enter search keyword"/>
+          <button type="submit" title="Search"><i className="bi bi-search"></i></button>
+        </form>
+      </div>
 
-    <nav className="header-nav ms-auto">
-      <ul className="d-flex align-items-center">
+      <nav className="header-nav ms-auto">
+        <ul className="d-flex align-items-center">
 
-        <li className="nav-item d-block d-lg-none">
-          <a className="nav-link nav-icon search-bar-toggle " href="#">
-            <i className="bi bi-search"></i>
-          </a>
-        </li>
+          <li className="nav-item d-block d-lg-none">
+            <a className="nav-link nav-icon search-bar-toggle " href="#">
+              <i className="bi bi-search"></i>
+            </a>
+          </li>
 
-        <li className="nav-item dropdown">
+          <li className="nav-item dropdown">
 
-            <a className="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i className="bi bi-bell"></i>
-              <span className="badge bg-primary badge-number">4</span>
+              <a className="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                <i className="bi bi-bell"></i>
+                <span className="badge bg-primary badge-number">4</span>
+              </a>
+
+            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+              <li className="dropdown-header">
+                You have 4 new notifications
+                <a href="#"><span className="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              </li>
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
+
+              <li className="notification-item">
+                <i className="bi bi-exclamation-circle text-warning"></i>
+                <div>
+                  <h4>Lorem Ipsum</h4>
+                  <p>Quae dolorem earum veritatis oditseno</p>
+                  <p>30 min. ago</p>
+                </div>
+              </li>
+
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
+
+              <li className="notification-item">
+                <i className="bi bi-x-circle text-danger"></i>
+                <div>
+                  <h4>Atque rerum nesciunt</h4>
+                  <p>Quae dolorem earum veritatis oditseno</p>
+                  <p>1 hr. ago</p>
+                </div>
+              </li>
+
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
+
+              <li className="notification-item">
+                <i className="bi bi-check-circle text-success"></i>
+                <div>
+                  <h4>Sit rerum fuga</h4>
+                  <p>Quae dolorem earum veritatis oditseno</p>
+                  <p>2 hrs. ago</p>
+                </div>
+              </li>
+
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
+
+              <li className="notification-item">
+                <i className="bi bi-info-circle text-primary"></i>
+                <div>
+                  <h4>Dicta reprehenderit</h4>
+                  <p>Quae dolorem earum veritatis oditseno</p>
+                  <p>4 hrs. ago</p>
+                </div>
+              </li>
+
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
+              <li className="dropdown-footer">
+                <a href="#">Show all notifications</a>
+              </li>
+
+            </ul>
+
+          </li>
+
+          <li className="nav-item dropdown pe-3">
+
+            <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+              <img src={profileImg} alt="Profile" className="rounded-circle"/>
+              <span className="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
             </a>
 
-          <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li className="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span className="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
+            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+              <li className="dropdown-header">
+                <h6>Kevin Anderson</h6>
+                <span>Web Designer</span>
+              </li>
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
 
-            <li className="notification-item">
-              <i className="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
+              <li>
+                <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
+                  <i className="bi bi-person"></i>
+                  <span>My Profile</span>
+                </a>
+              </li>
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
 
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
+              <li>
+                <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
+                  <i className="bi bi-gear"></i>
+                  <span>Account Settings</span>
+                </a>
+              </li>
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
 
-            <li className="notification-item">
-              <i className="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
+              <li>
+                <a className="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                  <i className="bi bi-question-circle"></i>
+                  <span>Need Help?</span>
+                </a>
+              </li>
+              <li>
+                <hr className="dropdown-divider"/>
+              </li>
 
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
+              <li>
+                <a className="dropdown-item d-flex align-items-center" href="#">
+                  <i className="bi bi-box-arrow-right"></i>
+                  <span>Sign Out</span>
+                </a>
+              </li>
 
-            <li className="notification-item">
-              <i className="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
+            </ul>
+          </li>
 
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
+        </ul>
+      </nav>
 
-            <li className="notification-item">
-              <i className="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
-            <li className="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul>
-
-        </li>
-
-        <li className="nav-item dropdown pe-3">
-
-          <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src={profileImg} alt="Profile" className="rounded-circle"/>
-            <span className="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-          </a>
-
-          <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li className="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
-            </li>
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
-
-            <li>
-              <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i className="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
-
-            <li>
-              <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i className="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
-
-            <li>
-              <a className="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i className="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr className="dropdown-divider"/>
-            </li>
-
-            <li>
-              <a className="dropdown-item d-flex align-items-center" href="#">
-                <i className="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
-            </li>
-
-          </ul>
-        </li>
-
-      </ul>
-    </nav>
-
-  </header>
-    );
+    </header>
+  );
+  }
+    
 }
 export default Header;

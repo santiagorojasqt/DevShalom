@@ -59,8 +59,6 @@ function Contact() {
   else{
     return (
       <div className="App">
-        <Header/>
-        <Sidebar />
           <main id="main" class="main">
             <div class="pagetitle">
               <h1>Sedes</h1>
@@ -178,7 +176,6 @@ function Contact() {
               </div>
             </section>
           </main>
-        <Footer/>
       </div>
     )
   }

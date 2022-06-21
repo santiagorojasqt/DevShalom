@@ -8,16 +8,13 @@ import './public/vendor/remixicon/remixicon.css';
 import './public/vendor/simple-datatables/style.css';
 import './public/css/style.css';
 import ReactTooltip from 'react-tooltip';
-import { useAuth } from "./context/AuthContext";
 import Sidebar from './Sidebar';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { render } from "react-dom";
 import Header from './Header';
-import { Helmet } from 'react-helmet';
 import Footer from './Footer';
-import {auth, functions} from './firebase';
+import {auth} from './firebase';
 import Loading from "./loading";
 import { useNavigate } from 'react-router-dom'
 
@@ -51,17 +48,17 @@ function Contract() {
   const newContract = async()=>{
     navigate('/Contract/Create')
   }
+
   useEffect(() => {
     getAllContracts();
   }, []);
+
   if(loading){
     return <Loading  type="String" color="#000000" />;
   }
   else{
     return (
-      <div className="App">
-        <Header/>
-        <Sidebar />
+      <div className="Contract">
           <main id="main" class="main">
             <div class="pagetitle">
               <h1>Contratos</h1>
@@ -155,7 +152,6 @@ function Contract() {
               </div>
             </section>
           </main>
-        <Footer/>
       </div>
     )
   }
