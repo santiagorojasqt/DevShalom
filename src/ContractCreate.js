@@ -129,7 +129,7 @@ function ContractCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { formData  && formData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{} } goTo='/Contract' formData={formData} />}
+                      { formData  && formData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{} } object='Contratos' goTo='/Contract' formData={formData} />}
                     </div>
                   </div>
                 </div>

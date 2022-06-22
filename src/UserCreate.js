@@ -134,7 +134,7 @@ function UserCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { userFormData && userFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/User' formData={userFormData} />}
+                      { userFormData && userFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} object='Users' goTo='/User' formData={userFormData} />}
                     </div>
                   </div>
                 </div>

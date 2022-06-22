@@ -134,7 +134,7 @@ function DeliveryCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { deliveryFormData && deliveryFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Delivery' formData={deliveryFormData} />}
+                      { deliveryFormData && deliveryFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Delivery' object='Entregas' formData={deliveryFormData} />}
                     </div>
                   </div>
                 </div>

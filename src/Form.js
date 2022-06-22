@@ -69,7 +69,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input aria-current={item} required value={props.values[item.Name] && props.values[item.Name].stringValue} name={item.Name} id={item.Name+item.Type} type="text" onChange={handleChange} className="form-control"/>
+                      <input aria-current={item} required value={props.values[item.Name] && props.values[item.Name].stringValue} name={item.Name} id={item.Name+item.Type} type={item.Name.includes('Email')?'email':'text'} onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
@@ -99,7 +99,7 @@ function Form(props) {
                   </div>
                 );
             })}
-            {props.formData && props.formData['Date']>0 && props.formData['Date'].map(item => {
+            {props.formData && props.formData['Date'] && props.formData['Date'].map(item => {
                 return (
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
@@ -110,7 +110,7 @@ function Form(props) {
                 );
             })}
 
-            {props.formData && props.formData['Media']>0 && props.formData['Media'].map(item => {
+            {props.formData && props.formData['Media'] && props.formData['Media'].map(item => {
                 return (
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
@@ -121,7 +121,7 @@ function Form(props) {
                 );
             })}
 
-            {props.formData && props.formData['Reference']>0 && props.formData['Reference'].map(item => {
+            {props.formData && props.formData['Reference'] && props.formData['Reference'].map(item => {
                 return (
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>

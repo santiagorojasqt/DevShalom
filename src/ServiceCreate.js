@@ -134,7 +134,7 @@ function ServiceCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { serviceFormData && serviceFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Service' formData={serviceFormData} />}
+                      { serviceFormData && serviceFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} object='Servicios' goTo='/Service' formData={serviceFormData} />}
                     </div>
                   </div>
                 </div>

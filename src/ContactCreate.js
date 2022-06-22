@@ -136,7 +136,7 @@ function ContactCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { formData  &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Contact' formData={formData} />}
+                      { formData  &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} object='Contactos' goTo='/Contact' formData={formData} />}
                     </div>
                   </div>
                 </div>

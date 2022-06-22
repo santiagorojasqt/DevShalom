@@ -134,7 +134,7 @@ function RequirementCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { requirementFormData && requirementFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Requirement' formData={requirementFormData} />}
+                      { requirementFormData && requirementFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Requirement' object='Requerimientos' formData={requirementFormData} />}
                     </div>
                   </div>
                 </div>
