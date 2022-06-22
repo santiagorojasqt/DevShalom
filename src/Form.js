@@ -46,6 +46,7 @@ function Form(props) {
         ).then(function(resp){
             console.log(resp.data);
             setLoading(false);
+            goToBranch();
         })
         .catch(function(err){
             console.log(err);
