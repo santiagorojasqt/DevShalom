@@ -103,15 +103,15 @@ function Branch() {
                           {allBranches && allBranches.map(item => {
                             return (
                               <tr key={item._ref._path.segments[1]}>
-                                <td scope="row">{ item._fieldsProto['Direccion'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Frecuencia de Envio'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Municipio'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Nombre CC'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Observaciones'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Presupuesto Pedido'].integerValue }</td>
-                                <td scope="row">{ item._fieldsProto['Presupuesto Total'].integerValue }</td>
-                                <td scope="row">{ item._fieldsProto['Transportadora Primaria'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Zona'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Direccion'] && item._fieldsProto['Direccion'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Frecuencia de Envio'] && item._fieldsProto['Frecuencia de Envio'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Municipio'] && item._fieldsProto['Municipio'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Nombre CC'] && item._fieldsProto['Nombre CC'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Observaciones'] && item._fieldsProto['Observaciones'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Presupuesto Pedido'] && item._fieldsProto['Presupuesto Pedido'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Presupuesto Total'] && item._fieldsProto['Presupuesto Total'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Transportadora Primaria'] && item._fieldsProto['Transportadora Primaria'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Zona'] && item._fieldsProto['Zona'].stringValue }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}

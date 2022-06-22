@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, SetStateAction } from "react";
 import { Alert } from "./Alert";
 import axios from "axios";
 import { auth } from "./firebase";
@@ -13,14 +13,20 @@ function Form(props) {
   const [error, setError] = useState("");
   const [objectInfo, setObjectInfo] = useState({
   });
-  
+
   const [loading, setLoading] = useState(false);
   console.log(props.values);
   console.log(props.values[0]);
   const navigate = useNavigate()
   const handleChange = ({ target: { value, name } }) =>
     setObjectInfo({ ...objectInfo, [name]: value });
-
+  const handleChangeComboBox = (event,Name,item) => {
+    console.log(event);
+    console.log(Name);
+    setObjectInfo({ ...objectInfo, [Name]: event.Name });
+    props.values[Name] = event.Name;
+  };
+  
   const handleSave = async(e) => {
     e.preventDefault();
     if(Object.keys(objectInfo).length<=0){
@@ -73,18 +79,12 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label className="col-form-label" for={item.Name+item.Type}>{item.Name}</label>
                     <div className="col-sm-10">
-                      <Select 
-                          aria-current={item} 
-                          required 
-                          defaultValue={props.values[item.Name] && props.values[item.Name].stringValue} 
-                          name={item.Name} 
-                          id={item.Name+item.Type}
-                          onChange={handleChange} 
-                          aria-label="Default select example"
-                          options={item.Values?values.default[item.Values.replace('.json','')]:[]}
-                          getOptionLabel={(option) => option.Name}
-                          getOptionValue={(option) => option.Name} // It should be unique value in the options. E.g. ID
-                        />
+                    <select aria-current={item} required value={props.values[item.Name] && props.values[item.Name].stringValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-select">
+                      <option>Selecciona una opción</option>
+                      {item.Values && values.default[item.Values.replace('.json','')] &&  values.default[item.Values.replace('.json','')].map((option) => (
+                        <option value={option.Name}>{option.Name}</option>
+                      ))}
+                    </select>
                     </div>
                   </div>
                 );
