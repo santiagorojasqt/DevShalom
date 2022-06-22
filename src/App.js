@@ -32,6 +32,16 @@ import User from './User';
 import UserCreate from './UserCreate';
 import Service from './Service';
 import RequirementCreate from './RequirementCreate';
+import Producto_VS_Sedes from './Producto_VS_Sedes';
+import Producto_VS_Entregas from './Producto_VS_Entregas';
+
+
+
+
+
+
+
+
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
   return (
@@ -120,7 +130,18 @@ function App() {
                   <RequirementCreate />
                 </ProtectedRoute>
               } />
+              <Route exact path="/Producto_VS_Sedes" element={
+                <ProtectedRoute>
+                <Producto_VS_Sedes />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/Producto_VS_Entregas" element={
+                <ProtectedRoute>
+                <Producto_VS_Entregas />
+                </ProtectedRoute>
+              } />
               
+
             </Routes>
             
           </AuthProvider>
