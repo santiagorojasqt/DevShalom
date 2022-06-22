@@ -9,23 +9,22 @@ import Select from "react-select";
 
 let props ={};
 function Form(props) {
+  console.log(props.formData);
   console.log(values.default['Municipios']);
   const [error, setError] = useState("");
   const [objectInfo, setObjectInfo] = useState({
   });
 
   const [loading, setLoading] = useState(false);
-  console.log(props.values);
-  console.log(props.values[0]);
+  if(props.values && !objectInfo.id)
+    setObjectInfo({ ...objectInfo, id: props.values.id });
   const navigate = useNavigate()
-  const handleChange = ({ target: { value, name } }) =>
+  const handleChange = ({ target: { value, name } }) =>{
     setObjectInfo({ ...objectInfo, [name]: value });
-  const handleChangeComboBox = (event,Name,item) => {
-    console.log(event);
-    console.log(Name);
-    setObjectInfo({ ...objectInfo, [Name]: event.Name });
-    props.values[Name] = event.Name;
-  };
+    props.values.data[name]=value;
+    
+  }
+    
   
   const handleSave = async(e) => {
     e.preventDefault();
@@ -35,6 +34,11 @@ function Form(props) {
     }
     else{
       let tokenData = await auth.currentUser.getIdToken();
+      if(props.values && props.values.id)
+      {
+        console.log(props.values.id)
+      }
+      console.log(props.values);
       setLoading(true);
       await axios.post(
         'http://localhost:5001/shalom-103df/us-central1/app//createObject',
@@ -70,7 +74,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input aria-current={item} required value={props.values[item.Name] && props.values[item.Name].stringValue} name={item.Name} id={item.Name+item.Type} type={item.Name.includes('Email')?'email':'text'} onChange={handleChange} className="form-control"/>
+                      <input aria-current={item} required value={props.values.data[item.Name] && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} type={item.Name.includes('Email')?'email':'text'} onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
@@ -80,7 +84,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label className="col-form-label" for={item.Name+item.Type}>{item.Name}</label>
                     <div className="col-sm-10">
-                    <select aria-current={item} required value={props.values[item.Name] && props.values[item.Name].stringValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-select">
+                    <select aria-current={item} required value={props.values.data[item.Name] && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-select">
                       <option>Selecciona una opción</option>
                       {item.Values && values.default[item.Values.replace('.json','')] &&  values.default[item.Values.replace('.json','')].map((option) => (
                         <option value={option.Name}>{option.Name}</option>
@@ -95,7 +99,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input aria-current={item} required type="number" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                      <input aria-current={item} required type="number" value={props.values.data[item.Name]&& props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
@@ -105,7 +109,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input aria-current={item} required type="date" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                      <input aria-current={item} required type="text" value={props.values.data[item.Name] && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
@@ -116,7 +120,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input aria-current={item} required type="date" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                      <input aria-current={item} required type="date" value={props.values.data[item.Name]&& props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
@@ -127,7 +131,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input aria-current={item} required type="Text" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                      <input aria-current={item} required type="Text" value={props.values.data[item.Name]&& props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
