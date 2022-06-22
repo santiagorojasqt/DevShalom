@@ -103,6 +103,23 @@ function Sidebar() {
                 </a>
                 {menuItemsHtml && <MenuComponent listValue={menuItemsHtml}/>}
             </li>
+          
+            <li className="nav-item">
+                <a className="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i className="bi bi-menu-button-wide"></i><span>Centro de Costos y Usuarios</span><i className="bi bi-chevron-down ms-auto"></i>
+                </a>
+               
+            </li>
+            <li className="nav-item">
+                <a className="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i className="bi bi-menu-button-wide"></i><span>Servicios</span><i className="bi bi-chevron-down ms-auto"></i>
+                </a>
+            </li>
+            <li className="nav-item">
+                <a className="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i className="bi bi-menu-button-wide"></i><span>Reportes</span><i className="bi bi-chevron-down ms-auto"></i>
+                </a>
+            </li>
 
             <li className="nav-heading">Pages</li>
 

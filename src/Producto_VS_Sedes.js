@@ -95,6 +95,7 @@ function Branch() {
                             <th scope="col">Linea</th>
                             <th scope="col">Codigo Producto</th>
                             <th scope="col">Codigo 2</th>
+                            <th scope="col">Producto</th>
                             <th scope="col">Detalle Producto</th>
                             <th scope="col">Precio unitario</th>
                             <th scope="col">columna de sedes</th> 
@@ -116,6 +117,7 @@ function Branch() {
                                 <td scope="row">{ item._fieldsProto['Presupuesto Pedido']&& item._fieldsProto['Presupuesto Pedido'].integerValue }</td>
                                 <td scope="row">{ item._fieldsProto['Presupuesto Total']&& item._fieldsProto['Presupuesto Total'].integerValue }</td>
                                 <td scope="row">{ item._fieldsProto['Transportadora Primaria']&& item._fieldsProto['Transportadora Primaria'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Zona']&& item._fieldsProto['Zona'].stringValue }</td>
                                 <td scope="row">{ item._fieldsProto['Zona']&& item._fieldsProto['Zona'].stringValue }</td>
                                
                               </tr>
