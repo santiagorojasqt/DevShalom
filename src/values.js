@@ -998,5 +998,11 @@ const Municipios = [{"region":"Región Eje Cafetero - Antioquia","c_digo_dane_de
 ,{"region":"Región Pacífico","c_digo_dane_del_departamento":"76","departamento":"Valle del Cauca","c_digo_dane_del_municipio":"76.233","Name":"Dagua"}
 ,{"region":"Región Centro Oriente","c_digo_dane_del_departamento":"54","departamento":"Norte de Santander","c_digo_dane_del_municipio":"54.051","Name":"Arboledas"}
 ,{"region":"Región Pacífico","c_digo_dane_del_departamento":"76","departamento":"Valle del Cauca","c_digo_dane_del_municipio":"76.318","Name":"Guacarí"}]
-const toReturn ={Municipios:Municipios};
+const TipoPedido =[{"Name":"1 - REGULAR"},{"Name":"2 - ESPECIAL"}]
+const Prioridad =[{"Name":"Normal"},{"Name":"Urgente"}]
+const TipodeProducto =[{"Name":"CONSUMO"},{"Name":"ARRIENDO"},{"Name":"EPPS"}]
+const FrecuenciaEnvio =[{"Name":"Mensual"},{"Name":"Bimensual"},{"Name":"Trimestral"},{"Name":"Cuatrimestral"},{"Name":"Cada 5 meses"},{"Name":"Unica"}]
+const Transportadora =[{"Name":"VELOTAZ"},{"Name":"COPETRAN"},{"Name":"RAPIDO OCHOA"}]
+const EstadoEntrega =[{"Name":"ACTIVA"},{"Name":"INACTIVA"}]
+const toReturn ={Municipios:Municipios,TipoPedido:TipoPedido,Prioridad:Prioridad,TipodeProducto:TipodeProducto,FrecuenciaEnvio:FrecuenciaEnvio,Transportadora:Transportadora,EstadoEntrega:EstadoEntrega  };
 export default  toReturn;
