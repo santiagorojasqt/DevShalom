@@ -7,7 +7,7 @@ export function ProtectedRoute({ children }) {
   const validToken = async()=>{
     let tokenData = await auth.currentUser.getIdToken();
     await axios.post(
-      'https://us-central1-shalom-103df.cloudfunctions.net/app/ValidateToken',
+      'http://localhost:5001/shalom-103df/us-central1/app/ValidateToken',
       { example: 'data' },
       { headers: { 
           'Content-Type': 'application/json',

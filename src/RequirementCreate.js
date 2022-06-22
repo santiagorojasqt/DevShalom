@@ -43,7 +43,7 @@ function RequirementCreate() {
     else{
       let tokenData = await auth.currentUser.getIdToken();
       await axios.post(
-      'https://us-central1-shalom-103df.cloudfunctions.net/app/getFieldsForObject',
+      'http://localhost:5001/shalom-103df/us-central1/app/getFieldsForObject',
       { "objectReference" : 'Objects/KDFtf983EdDnWMXV6eAJ',"profileReference":'Profile Object Permissions/wZ2X8Vb01asLLSaLZ37t' },
       { headers: { 
           'Content-Type': 'application/json',

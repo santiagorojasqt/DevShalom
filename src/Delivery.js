@@ -29,7 +29,7 @@ function Delivery() {
     let tokenData = await auth.currentUser.getIdToken();
     setLoading(true);
     await axios.post(
-    'https://us-central1-shalom-103df.cloudfunctions.net/app/getAllDeliveries',
+    'http://localhost:5001/shalom-103df/us-central1/app/getAllDeliveries',
     { example: 'data' },
     { headers: { 
         'Content-Type': 'application/json',

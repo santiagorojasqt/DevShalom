@@ -39,7 +39,7 @@ function ContractCreate() {
     else{
       let tokenData = await auth.currentUser.getIdToken();
       await axios.post(
-      'https://us-central1-shalom-103df.cloudfunctions.net/app/getFieldsForObject',
+      'http://localhost:5001/shalom-103df/us-central1/app/getFieldsForObject',
       { "objectReference" : 'Objects/BIbeb7Pqiera9YhdaCAs',"profileReference":'Profile Object Permissions/GcBdKKnHZx1i2vivFToS' },
       { headers: { 
           'Content-Type': 'application/json',
@@ -51,6 +51,7 @@ function ContractCreate() {
           for(const element in resp.data){
             const dataElement = resp.data[element];
             console.log(dataElement);
+            if(dataElement== null) continue;
             console.log(dataElement._fieldsProto);
             if(dataElement._fieldsProto.Type.stringValue == 'Combobox'){
               dataElement._fieldsProto.Type.stringValue = 'ComboBox';
