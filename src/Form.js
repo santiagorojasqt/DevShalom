@@ -1,21 +1,61 @@
 import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Alert } from "./Alert";
+import axios from "axios";
+import { auth } from "./firebase";
+import Loading from "react-loading";
+import * as values from './values';
+import Select from "react-select";
+
 let props ={};
 function Form(props) {
+  console.log(values.default['Municipios']);
+  const [error, setError] = useState("");
+  const [objectInfo, setObjectInfo] = useState({
+  });
+  
+  const [loading, setLoading] = useState(false);
   console.log(props.values);
   console.log(props.values[0]);
   const navigate = useNavigate()
-  const handleChange = async(e) => {
-  }
+  const handleChange = ({ target: { value, name } }) =>
+    setObjectInfo({ ...objectInfo, [name]: value });
+
   const handleSave = async(e) => {
     e.preventDefault();
-    e.preventDefault();
-    console.log(e.target[0].value)
+    if(Object.keys(objectInfo).length<=0){
+      console.log('empty');
+      setError('Pofavor digita los campos');
+    }
+    else{
+      let tokenData = await auth.currentUser.getIdToken();
+      setLoading(true);
+      await axios.post(
+        'http://localhost:5001/shalom-103df/us-central1/app//createObject',
+        { collection: props.object, values:objectInfo},
+        { headers: { 
+            'Content-Type': 'application/json',
+            'Authorization':  'Bearer '+tokenData
+        } }
+        ).then(function(resp){
+            console.log(resp.data);
+            setLoading(false);
+        })
+        .catch(function(err){
+            console.log(err);
+            setLoading(false);
+        });
+      setError('');
+      console.log(objectInfo);
+    }
   }
   const goToBranch = async()=>{
     navigate(props.goTo);
   }
   return(
     <form>
+       {error && <Alert message={error} />}
+       {loading && <Loading type="String" color="#000000"  />}
       <div className="container">
         <div className="row">
           {props.formData && props.formData['Text'] && props.formData['Text'].map(item => {
@@ -23,7 +63,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input aria-current={item} value={props.values[item.Name] && props.values[item.Name].stringValue} name={item.Name} id={item.Name+item.Type} type="text" onChange={handleChange} className="form-control"/>
+                      <input aria-current={item} required value={props.values[item.Name] && props.values[item.Name].stringValue} name={item.Name} id={item.Name+item.Type} type="text" onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
@@ -33,12 +73,18 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label className="col-form-label" for={item.Name+item.Type}>{item.Name}</label>
                     <div className="col-sm-10">
-                      <select aria-current={item} defaultValue={props.values[item.Name] && props.values[item.Name].stringValue} name={item.Name} id={item.Name+item.Type} className="form-select" onChange={handleChange} aria-label="Default select example">
-                        <option >Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
+                      <Select 
+                          aria-current={item} 
+                          required 
+                          defaultValue={props.values[item.Name] && props.values[item.Name].stringValue} 
+                          name={item.Name} 
+                          id={item.Name+item.Type}
+                          onChange={handleChange} 
+                          aria-label="Default select example"
+                          options={item.Values?values.default[item.Values.replace('.json','')]:[]}
+                          getOptionLabel={(option) => option.Name}
+                          getOptionValue={(option) => option.Name} // It should be unique value in the options. E.g. ID
+                        />
                     </div>
                   </div>
                 );
@@ -48,7 +94,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input aria-current={item} type="number" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                      <input aria-current={item} required type="number" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
@@ -56,7 +102,10 @@ function Form(props) {
             {props.formData && props.formData['Date']>0 && props.formData['Date'].map(item => {
                 return (
                   <div className="form-group col-sm-6">
-                    { }
+                    <label for="inputText" className="col-form-label">{item.Name}</label>
+                    <div className="col-sm-10">
+                      <input aria-current={item} required type="date" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                    </div>
                   </div>
                 );
             })}
@@ -64,7 +113,21 @@ function Form(props) {
             {props.formData && props.formData['Media']>0 && props.formData['Media'].map(item => {
                 return (
                   <div className="form-group col-sm-6">
-                    { }
+                    <label for="inputText" className="col-form-label">{item.Name}</label>
+                    <div className="col-sm-10">
+                      <input aria-current={item} required type="date" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                    </div>
+                  </div>
+                );
+            })}
+
+            {props.formData && props.formData['Reference']>0 && props.formData['Reference'].map(item => {
+                return (
+                  <div className="form-group col-sm-6">
+                    <label for="inputText" className="col-form-label">{item.Name}</label>
+                    <div className="col-sm-10">
+                      <input aria-current={item} required type="Text" value={props.values[item.Name]&& props.values[item.Name].integerValue} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                    </div>
                   </div>
                 );
             })}

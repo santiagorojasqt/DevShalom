@@ -27,7 +27,7 @@ function Contract() {
     let tokenData = await auth.currentUser.getIdToken();
     setLoading(true);
     await axios.post(
-    'https://us-central1-shalom-103df.cloudfunctions.net/app/getAllContracts',
+    'http://localhost:5001/shalom-103df/us-central1/app/getAllContracts',
     { example: 'data' },
     { headers: { 
         'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ function Contract() {
                                 <td scope="row">{ item._fieldsProto['Fecha Inicio'].integerValue }</td>
                                 <td scope="row">{ item._fieldsProto['Fecha Fin'].stringValue }</td>
                                 <td scope="row">{ item._fieldsProto['Observaciones'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Email Notificaciones Estado Pedidos'].stringValue }</td>
+                                <td scope="row">{ item._fieldsProto['Email Notificacion de Estado de Pedidos'].stringValue }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}
