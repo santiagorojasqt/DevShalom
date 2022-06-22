@@ -36,6 +36,7 @@ function Contract() {
     ).then(function(resp){
         console.log(resp.data);
         allContracts = resp.data;
+        console.log(allContracts[0].data);
         setLoading(false);
     })
     .catch(function(err){
@@ -45,8 +46,11 @@ function Contract() {
     });
   }
 
-  const newContract = async()=>{
-    navigate('/Contract/Create')
+
+
+  const newContract =(item)=>{
+    console.log(item.id);
+    navigate('/Contract/Create',{state:item},{ replace: true })
   }
 
   useEffect(() => {
@@ -98,16 +102,16 @@ function Contract() {
                         <tbody>
                           {allContracts && allContracts.map(item => {
                             return (
-                              <tr key={item._ref._path.segments[1]}>
-                                <td scope="row">{ item._fieldsProto['ID Contrato'] && item._fieldsProto['ID Contrato'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Referencia'] && item._fieldsProto['Referencia'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Entidad/Cliente'] && item._fieldsProto['Entidad/Cliente'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Direccion'] && item._fieldsProto['Direccion'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Telefono'] && item._fieldsProto['Telefono'].integerValue }</td>
-                                <td scope="row">{ item._fieldsProto['Fecha Inicio'] && item._fieldsProto['Fecha Inicio'].integerValue }</td>
-                                <td scope="row">{ item._fieldsProto['Fecha Fin'] && item._fieldsProto['Fecha Fin'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Observaciones'] && item._fieldsProto['Observaciones'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Email Notificacion de Estado de Pedidos'] && item._fieldsProto['Email Notificacion de Estado de Pedidos'].stringValue }</td>
+                              <tr key={item}>
+                                <td scope="row">{ item.data['ID Contrato'] && item.data['ID Contrato'] }</td>
+                                <td scope="row">{ item.data['Referencia'] && item.data['Referencia'] }</td>
+                                <td scope="row">{ item.data['Entidad/Cliente'] && item.data['Entidad/Cliente'] }</td>
+                                <td scope="row">{ item.data['Direccion'] && item.data['Direccion'] }</td>
+                                <td scope="row">{ item.data['Telefono'] && item.data['Telefono'] }</td>
+                                <td scope="row">{ item.data['Fecha Inicio'] && item.data['Fecha Inicio'] }</td>
+                                <td scope="row">{ item.data['Fecha Fin'] && item.data['Fecha Fin'] }</td>
+                                <td scope="row">{ item.data['Observaciones'] && item.data['Observaciones'] }</td>
+                                <td scope="row">{ item.data['Email Notificacion de Estado de Pedidos'] && item.data['Email Notificacion de Estado de Pedidos'] }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}
@@ -127,7 +131,7 @@ function Contract() {
                                       <hr className="dropdown-divider"/>
                                     </li>
                                     <li className="dropdown-item d-flex align-items-center">
-                                      <a className="dropdown-item d-flex align-items-center"  href="users-profile.html">
+                                      <a className="dropdown-item d-flex align-items-center" onClick={() => newContract(item) }>
                                         <i className="bi bi-pencil-fill text-dark"></i>
                                         <span>Modificar</span>
                                       </a>

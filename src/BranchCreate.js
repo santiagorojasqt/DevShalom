@@ -43,7 +43,7 @@ function BranchCreate() {
     else{
       let tokenData = await auth.currentUser.getIdToken();
       await axios.post(
-      'https://us-central1-shalom-103df.cloudfunctions.net/app/getFieldsForObject',
+      'http://localhost:5001/shalom-103df/us-central1/app/getFieldsForObject',
       { "objectReference" : 'Objects/gC6aLoXOhzxj7O9PU8i8',"profileReference":'Profile Object Permissions/pB6eSuUiN2PDvunlRv1w' },
       { headers: { 
           'Content-Type': 'application/json',

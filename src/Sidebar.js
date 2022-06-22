@@ -37,7 +37,7 @@ function Sidebar() {
             menuItemsHtml =[];
             let tokenData = await auth.currentUser.getIdToken();
             await axios.post(
-            'https://us-central1-shalom-103df.cloudfunctions.net/app/getAvailableModules',
+            'http://localhost:5001/shalom-103df/us-central1/app/getAvailableModules',
             { example: 'data' },
             { headers: { 
                 'Content-Type': 'application/json',

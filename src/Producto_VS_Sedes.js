@@ -31,7 +31,7 @@ function Branch() {
     let tokenData = await auth.currentUser.getIdToken();
     setLoading(true);
     await axios.post(
-    'https://us-central1-shalom-103df.cloudfunctions.net/app/getAllBranches',
+    'http://localhost:5001/shalom-103df/us-central1/app/getAllBranches',
     { example: 'data' },
     { headers: { 
         'Content-Type': 'application/json',

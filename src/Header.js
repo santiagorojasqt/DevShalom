@@ -5,16 +5,16 @@ import message2 from './public/img/messages-2.jpg';
 import message3 from './public/img/messages-3.jpg';
 import profileImg from './public/img/profile-img.jpg';
 import { Navigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
+import { useAuth} from "./context/AuthContext";
 import axios from 'axios';
 import {auth, functions} from './firebase';
 
 function Header() {
-  const { user, loading } = useAuth();
+  const { user, loading,logout } = useAuth();
   const validToken = async()=>{
     let tokenData = await auth.currentUser.getIdToken();
     await axios.post(
-      'https://us-central1-shalom-103df.cloudfunctions.net/app/ValidateToken',
+      'http://localhost:5001/shalom-103df/us-central1/app/ValidateToken',
       { example: 'data' },
       { headers: { 
           'Content-Type': 'application/json',
@@ -28,6 +28,14 @@ function Header() {
           console.log(err);
       });
   }
+  const handleLogout = async () => {
+    try {
+      await logout();
+      window.localStorage.clear();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   if (!user || !validToken()) return (<div></div>);
   else{
     return (
@@ -136,33 +144,15 @@ function Header() {
 
             <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src={profileImg} alt="Profile" className="rounded-circle"/>
-              <span className="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+              <span className="d-none d-md-block dropdown-toggle ps-2">{user.email}</span>
             </a>
 
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li className="dropdown-header">
-                <h6>Kevin Anderson</h6>
-                <span>Web Designer</span>
+                <h6>{user.email}</h6>
               </li>
               <li>
                 <hr className="dropdown-divider"/>
-              </li>
-
-              <li>
-                <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
-                  <i className="bi bi-person"></i>
-                  <span>My Profile</span>
-                </a>
-              </li>
-              <li>
-                <hr className="dropdown-divider"/>
-              </li>
-
-              <li>
-                <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
-                  <i className="bi bi-gear"></i>
-                  <span>Account Settings</span>
-                </a>
               </li>
               <li>
                 <hr className="dropdown-divider"/>
@@ -179,7 +169,7 @@ function Header() {
               </li>
 
               <li>
-                <a className="dropdown-item d-flex align-items-center" href="#">
+                <a className="dropdown-item d-flex align-items-center" href='#' onClick={handleLogout}>
                   <i className="bi bi-box-arrow-right"></i>
                   <span>Sign Out</span>
                 </a>
