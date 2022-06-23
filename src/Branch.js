@@ -53,6 +53,11 @@ function Branch() {
     navigate('/Branch/Create',{state:item},{ replace: true });
   }
 
+  const newBranch= ()=>{
+    console.log();
+    navigate('/Branch/Create');
+  }
+
   useEffect(() => {
     getAllBranches();
   }, []);

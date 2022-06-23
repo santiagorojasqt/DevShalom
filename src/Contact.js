@@ -50,7 +50,11 @@ function Contact() {
 
   const newContact =(item)=>{
     console.log(item.id);
+    console.log(item);
     navigate('/Contact/Create',{state:item},{ replace: true })
+  }
+  const createContact =()=>{
+    navigate('/Contact/Create')
   }
 
   useEffect(() => {
@@ -81,21 +85,16 @@ function Contact() {
                   <div class="card">
                     <div class="card-body">
                       <div className='card float-right'>
-                        <button className='btn btn-primary' onClick={newContact}>Crear Contacto</button>
+                        <button className='btn btn-primary' onClick={createContact}>Crear Contacto</button>
                       </div>
                       <h5 class="card-title">Todas Las Contactos</h5>
                       <table className='table thead-light'>
                         <thead>
                           <tr>
-                            <th scope="col">Direccion</th>
-                            <th scope="col">Frecuencia de Envio</th>
-                            <th scope="col">Municipio</th>
+                            <th scope="col">Cargo</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Telefono/Celular</th>
                             <th scope="col">Nombre CC</th>
-                            <th scope="col">Observaciones</th>
-                            <th scope="col">Presupuesto Pedido</th>
-                            <th scope="col">Presupuesto Total</th>
-                            <th scope="col">Transportadora Primaria</th>
-                            <th scope="col">Zona</th>
                             <th scope="col">Acciones</th>
                           </tr>
                         </thead>
@@ -103,15 +102,10 @@ function Contact() {
                           {allContacts && allContacts.map(item => {
                             return (
                               <tr key={item}>
-                                <td scope="row">{ item.data['Direccion'] && item.data['Direccion'] }</td>
-                                <td scope="row">{ item.data['Frecuencia de Envio'] && item.data['Frecuencia de Envio'] }</td>
-                                <td scope="row">{ item.data['Municipio'] && item.data['Municipio'] }</td>
-                                <td scope="row">{ item.data['Nombre CC'] && item.data['Nombre CC'] }</td>
-                                <td scope="row">{ item.data['Observaciones'] && item.data['Observaciones'] }</td>
-                                <td scope="row">{ item.data['Presupuesto Pedido'] && item.data['Presupuesto Pedido'] }</td>
-                                <td scope="row">{ item.data['Presupuesto Total'] && item.data['Presupuesto Total'] }</td>
-                                <td scope="row">{ item.data['Transportadora Primaria'] && item.data['Transportadora Primaria'] }</td>
-                                <td scope="row">{ item.data['Zona'] && item.data['Zona'] }</td>
+                                <td scope="row">{ item.data['Cargo'] && item.data['Cargo'] }</td>
+                                <td scope="row">{ item.data['Nombre'] && item.data['Nombre'] }</td>
+                                <td scope="row">{ item.data['Telefono/Celular'] && item.data['Telefono/Celular'] }</td>
+                                <td scope="row">{ item.data['Sede'] && item.data['Sede'] }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}
@@ -131,7 +125,7 @@ function Contact() {
                                       <hr className="dropdown-divider"/>
                                     </li>
                                     <li className="dropdown-item d-flex align-items-center">
-                                      <a className="dropdown-item d-flex align-items-center"  href="users-profile.html">
+                                      <a className="dropdown-item d-flex align-items-center" onClick={() => newContact(item)}>
                                         <i className="bi bi-pencil-fill text-dark"></i>
                                         <span>Modificar</span>
                                       </a>

@@ -38,7 +38,6 @@ function Delivery() {
     ).then(function(resp){
         console.log(resp.data);
         allDeliveries = resp.data;
-        console.log(allDeliveries[0].data);
         setLoading(false);
     })
     .catch(function(err){
@@ -52,6 +51,8 @@ function Delivery() {
     console.log(item.id);
     navigate('/Delivery/Create',{state:item},{ replace: true })
   }
+
+
   useEffect(() => {
     getAllDeliveries();
   }, []);
@@ -98,18 +99,18 @@ function Delivery() {
                           {allDeliveries && allDeliveries.map(item => {
                             return (
                               <tr key={item}>
-                                <td scope="row">{ item.data['ID Contrato'] && item.data['ID Contrato'] }</td>
-                                <td scope="row">{ item.data['Codigo Entrega'] && item.data['Codigo Entrega'] }</td>
+                                <td scope="row">{ item.data['Nombre'] && item.data['Nombre'] }</td>
+                                <td scope="row">{ item.data['Codigo del Contrato'] && item.data['Codigo del Contrato'] }</td>
                                 <td scope="row">{ item.data['ID Entrega'] && item.data['ID Entrega'] }</td>
-                                <td scope="row">{ item.data['Descripcion'] && item.data['Descripcion'] }</td>
-                                <td scope="row">{ item.data['Estado'] && item.data['Estado'] }</td>
+                                <td scope="row">{ item.data['Descripcion de la Entrega'] && item.data['Descripcion de la Entrega'] }</td>
+                                <td scope="row">{ item.data['Estado Entrega'] && item.data['Estado Entrega'] }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}
                                     onMouseLeave={() => {
                                       showTooltip(false);
                                       setTimeout(() => showTooltip(true), 50);
-                                    }} data-tip="Da click para ver mas opciones" href="#" data-bs-toggle="dropdown">
+                                    }} data-tip="Da click para ver mas opciones" data-bs-toggle="dropdown">
                                   {tooltip && <ReactTooltip effect="solid" />}
                                   <i className="bi bi-caret-down-fill"></i>
                                 </a>
@@ -122,7 +123,7 @@ function Delivery() {
                                       <hr className="dropdown-divider"/>
                                     </li>
                                     <li className="dropdown-item d-flex align-items-center">
-                                      <a className="dropdown-item d-flex align-items-center"  href="users-profile.html">
+                                      <a className="dropdown-item d-flex align-items-center" onClick={() => newDelivery(item)}>
                                         <i className="bi bi-pencil-fill text-dark"></i>
                                         <span>Modificar</span>
                                       </a>

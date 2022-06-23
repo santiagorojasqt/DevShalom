@@ -39,7 +39,7 @@ function Service() {
     ).then(function(resp){
         console.log(resp.data);
         allServices = resp.data;
-        console.log(allContracts[0].data);
+        console.log(allServices[0].data);
         setLoading(false);
     })
     .catch(function(err){
@@ -52,6 +52,10 @@ function Service() {
   const newService =(item)=>{
     console.log(item.id);
     navigate('/Service/Create',{state:item},{ replace: true })
+  }
+
+  const createService =()=>{
+    navigate('/Service/Create')
   }
   useEffect(() => {
     getAllServices();
@@ -80,7 +84,7 @@ function Service() {
                   <div class="card">
                     <div class="card-body">
                       <div className='card float-right'>
-                        <button className='btn btn-primary' onClick={newService}>Crear Servicio</button>
+                        <button className='btn btn-primary' onClick={createService}>Crear Servicio</button>
                       </div>
                       <h5 class="card-title">Todos Los Servicios</h5>
                       <table className='table thead-light'>
@@ -105,16 +109,16 @@ function Service() {
                             return (
                               <tr key={item}>
                                 <td scope="row">{ item.data['Codigo'] && item.data['Codigo'] }</td>
-                                <td scope="row">{ item.data['ID'] && item.data['ID'] }</td>
+                                <td scope="row">{ item.data['Codigo'] && item.data['Codigo'] }</td>
                                 <td scope="row">{ item.data['Codigo 2'] && item.data['Codigo 2'] }</td>
                                 <td scope="row">{ item.data['Linea'] && item.data['Linea'] }</td>
                                 <td scope="row">{ item.data['Descripcion'] && item.data['Descripcion'] }</td>
                                 <td scope="row">{ item.data['Unidad de Medida'] && item.data['Unidad de Medida'] }</td>
                                 <td scope="row">{ item.data['Detalle'] && item.data['Detalle'] }</td>
-                                <td scope="row">{ item.data['Precio'] && item.data['Precio'] }</td>
-                                <td scope="row">{ item.data['IVA'] && item.data['IVA'] }</td>
+                                <td scope="row">{ item.data['Precio (En Pesos)'] && item.data['Precio (En Pesos)'] }</td>
+                                <td scope="row">{ item.data['Iva (En Pesos)'] && item.data['Iva (En Pesos)'] }</td>
                                 <td scope="row">{ item.data['Valor con IVA'] && item.data['Valor con IVA'] }</td>
-                                <td scope="row">{ item.data['Cantidad Mensual'] && item.data['Cantidad Mensual'] }</td>
+                                <td scope="row">{ item.data['Cantidad Mensual Contrato'] && item.data['Cantidad Mensual Contrato'] }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}
@@ -134,7 +138,7 @@ function Service() {
                                       <hr className="dropdown-divider"/>
                                     </li>
                                     <li className="dropdown-item d-flex align-items-center">
-                                      <a className="dropdown-item d-flex align-items-center"  href="users-profile.html">
+                                      <a className="dropdown-item d-flex align-items-center" onClick={() => newService(item)}>
                                         <i className="bi bi-pencil-fill text-dark"></i>
                                         <span>Modificar</span>
                                       </a>

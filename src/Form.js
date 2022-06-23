@@ -1,29 +1,26 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState, SetStateAction } from "react";
+import React, { useState } from "react";
 import { Alert } from "./Alert";
 import axios from "axios";
 import { auth } from "./firebase";
 import Loading from "react-loading";
 import * as values from './values';
-import Select from "react-select";
-
-let props ={};
 function Form(props) {
   const [error, setError] = useState("");
   let [objectInfo, setObjectInfo] = useState({
   });
 
   const [loading, setLoading] = useState(false);
-  if(props.values.data && !objectInfo.id){
-    objectInfo = props.values;
+  if(props.values && props.values.data && !objectInfo.id){
+    console.log(props.values.data);
+    objectInfo = props.values.data;
+    objectInfo['id']=props.values.id;
 
   }
 
   const navigate = useNavigate()
   const handleChange = ({ target: { value, name } }) =>{
     setObjectInfo({ ...objectInfo, [name]: value });
-    props.values.data[name]=value;
-    
   }
   
   const handleSave = async(e) => {
@@ -34,6 +31,7 @@ function Form(props) {
     else{
       let tokenData = await auth.currentUser.getIdToken();
       setLoading(true);
+      console.log(objectInfo);
       await axios.post(
         'http://localhost:5001/shalom-103df/us-central1/app/createObject',
         { collection: props.object, values:objectInfo},
@@ -42,6 +40,7 @@ function Form(props) {
             'Authorization':  'Bearer '+tokenData
         } }
         ).then(function(resp){
+            console.log(resp);
             setLoading(false);
             goToBranch();
         })
@@ -65,7 +64,7 @@ function Form(props) {
                   <div className="form-group col-sm-6">
                     <label for="inputText" className="col-form-label">{item.Name}</label>
                     <div className="col-sm-10">
-                      <input maxLength={item.Length} aria-current={item} required value={props.values.data && props.values.data[item.Name] && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} type={item.Name.includes('Email')?'email':'text'} onChange={handleChange} className="form-control"/>
+                      <input maxLength={item.Length} aria-current={item} required value={props.values && props.values.data && props.values.data[item.Name] && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} type={item.Name.includes('Email')?'email':'text'} onChange={handleChange} className="form-control"/>
                     </div>
                   </div>
                 );
@@ -90,7 +89,7 @@ function Form(props) {
                 <div className="form-group col-sm-6">
                   <label for="inputText" className="col-form-label">{item.Name}</label>
                   <div className="col-sm-10">
-                    <input maxLength={item.Length} aria-current={item} required type="number" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                    <input maxLength={item.Length} aria-current={item} required type="number" value={props.values && props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                   </div>
                 </div>
               );
@@ -101,7 +100,7 @@ function Form(props) {
                 <div className="form-group col-sm-6">
                   <label for="inputText" className="col-form-label">{item.Name}</label>
                   <div className="col-sm-10">
-                    <input aria-current={item} required type="text" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                    <input aria-current={item} required type="text" value={props.values && props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                   </div>
                 </div>
               );
@@ -123,7 +122,7 @@ function Form(props) {
                 <div className="form-group col-sm-6">
                   <label for="inputText" className="col-form-label">{item.Name}</label>
                   <div className="col-sm-10">
-                    <input aria-current={item} required type="date" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
+                    <input aria-current={item} required type="file" onChange={handleChange} className="form-control"/>
                   </div>
                 </div>
               );
@@ -136,7 +135,7 @@ function Form(props) {
                   <div className="col-sm-10">
                     <select aria-current={item} required value={props.values.data && props.values.data[item.Name] && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-select">
                       <option>Selecciona una opción</option>
-                      {props.referencesObject && props.referencesObject[item.RefObject].map((option) => (
+                      {props.referencesObject && props.referencesObject[item.RefObject] && props.referencesObject[item.RefObject].map((option) => (
                         <option value={option.id}>{option.Nombre.stringValue}</option>
                       ))}
                     </select>

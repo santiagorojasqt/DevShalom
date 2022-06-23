@@ -7,16 +7,13 @@ import './public/vendor/quill/quill.bubble.css';
 import './public/vendor/remixicon/remixicon.css';
 import './public/vendor/simple-datatables/style.css';
 import './public/css/style.css';
-import Sidebar from './Sidebar';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import Header from './Header';
-import Footer from './Footer';
 import {auth} from './firebase';
 import Loading from "./loading";
 import Form from './Form';
-import { useNavigate,useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 let requirementDataRetrieved = false;
 let title;
@@ -24,17 +21,8 @@ let requirementFormData;
 let location;
 let referenceObjectsData;
 function RequirementCreate() {
-  console.log('mounted');
-  console.log('mounted');
-  
-  
-
   const [requirementLoading,setrequirementLoading] = useState(false);
-  console.log('mounted');
   location = useLocation()
-  console.log('mounted');
-  const navigate2 = useNavigate()
-  console.log('mounted');
 
   const getReferences = async()=>{
     referenceObjectsData = {};
@@ -77,7 +65,6 @@ function RequirementCreate() {
     setrequirementLoading(true);
     if(window.localStorage.getItem('RequirementFormData')){
       requirementFormData = JSON.parse(window.localStorage.getItem("RequirementFormData"));
-      console.log(requirementFormData);
       if(requirementFormData['RefCode']){
         await getReferences();
       }
@@ -124,22 +111,12 @@ function RequirementCreate() {
 
       }
       window.localStorage.setItem("RequirementFormData", JSON.stringify(requirementFormData));
-      console.log(requirementFormData);
       requirementDataRetrieved = true;
-      console.log(requirementFormData)
       if(requirementFormData['RefCode']){
         await getReferences();
       }
       setrequirementLoading(false);
     }
-  }
-  
-
-  const handleChange = async(e) => {
-    
-  }
-  const handleSave = async(e) => {
-    
   }
   
   useEffect(()=>{

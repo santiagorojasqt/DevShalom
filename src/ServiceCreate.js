@@ -7,30 +7,65 @@ import './public/vendor/quill/quill.bubble.css';
 import './public/vendor/remixicon/remixicon.css';
 import './public/vendor/simple-datatables/style.css';
 import './public/css/style.css';
-import Sidebar from './Sidebar';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import Header from './Header';
-import Footer from './Footer';
 import {auth} from './firebase';
 import Loading from "./loading";
 import Form from './Form';
-import { useNavigate,useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 let serviceDataRetrieved = false;
 let title;
 let serviceFormData;
 let location;
+let referenceObjectsData;
 function ServiceCreate() {
   const [serviceLoading,setserviceLoading] = useState(false);
   location = useLocation()
-  if(!loading&& !formData) setserviceLoading(true);
+  if(!serviceLoading&& !serviceFormData) setserviceLoading(true);
+  const getReferences = async()=>{
+    setserviceLoading(true)
+    referenceObjectsData = {};
+    let tokenData = await auth.currentUser.getIdToken();
+    let objectsToGet = [];
+    for(const referenceField in  serviceFormData['RefCode']){
+      let data = serviceFormData['RefCode'];
+      console.log(data)
+      console.log(data[referenceField]);
+      objectsToGet.push(data[referenceField].RefObject);
+    }
+    let resp = await axios.post(
+      'http://localhost:5001/shalom-103df/us-central1/app/getReferenceObjets',
+      { "objectsToGet" :  objectsToGet},
+      { headers: { 
+          'Content-Type': 'application/json',
+          'Authorization':  'Bearer '+tokenData
+      } }
+    );
+    console.log(resp);
+    for(const elementData in resp.data){
+      const currenElement = resp.data[elementData];
+      console.log(currenElement);
+      for(const key in currenElement){
+        referenceObjectsData[key] = [];
+        const nexEl = currenElement[key];
+        console.log(key);
+        console.log(nexEl);
+        for(const arrayMember in nexEl){
+          const otherEl = nexEl[arrayMember];
+          otherEl._fieldsProto['id'] = otherEl._ref._path.segments[0]+'/'+otherEl._ref._path.segments[1];
+          referenceObjectsData[key].push(otherEl._fieldsProto);
+        }
+      }
+    }
+    setserviceLoading(false);
+  }
   const getFieldsForObject = async()=>{
   
     if(window.localStorage.getItem('ServiceFormData')){
 
-      setLoading(false);
+      setserviceLoading(false);
       serviceFormData = JSON.parse(window.localStorage.getItem("ServiceFormData"));
       console.log(serviceFormData);
       setserviceLoading(false);
@@ -89,14 +124,6 @@ function ServiceCreate() {
     }
   }
   
-
-  const handleChange = async(e) => {
-    
-  }
-  const handleSave = async(e) => {
-    
-  }
-  
   useEffect(()=>{
     if(!serviceDataRetrieved){
       serviceDataRetrieved = true;
@@ -129,7 +156,7 @@ function ServiceCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { serviceFormData && serviceFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{}} object='Servicios' goTo='/Service' formData={serviceFormData} />}
+                      { serviceFormData && serviceFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{}} object='Servicios' goTo='/Service' referencesObject={referenceObjectsData} formData={serviceFormData} />}
                     </div>
                   </div>
                 </div>

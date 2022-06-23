@@ -22,79 +22,107 @@ let userDataRetrieved = false;
 let title;
 let userFormData;
 let location;
+let referenceObjectsData;
 function UserCreate() {
   const [userLoading,setuserLoading] = useState(false);
   location = useLocation()
-  if(!loading&& !formData) setuserLoading(true);
-  const getFieldsForObject = async()=>{
-  
-    if(window.localStorage.getItem('UserFormData')){
+  if(!userLoading&& !userFormData) setuserLoading(true);
+  const getReferences = async()=>{
+    setuserLoading(true)
+    referenceObjectsData = {};
+    let tokenData = await auth.currentUser.getIdToken();
+    let objectsToGet = [];
+    for(const referenceField in  userFormData['RefCode']){
+      let data = userFormData['RefCode'];
+      console.log(data)
+      console.log(data[referenceField]);
+      objectsToGet.push(data[referenceField].RefObject);
+    }
+    let resp = await axios.post(
+      'http://localhost:5001/shalom-103df/us-central1/app/getReferenceObjets',
+      { "objectsToGet" :  objectsToGet},
+      { headers: { 
+          'Content-Type': 'application/json',
+          'Authorization':  'Bearer '+tokenData
+      } }
+    );
+    console.log(resp);
+    for(const elementData in resp.data){
+      const currenElement = resp.data[elementData];
+      console.log(currenElement);
+      for(const key in currenElement){
+        referenceObjectsData[key] = [];
+        const nexEl = currenElement[key];
+        console.log(key);
+        console.log(nexEl);
+        for(const arrayMember in nexEl){
+          const otherEl = nexEl[arrayMember];
+          otherEl._fieldsProto['id'] = otherEl._ref._path.segments[0]+'/'+otherEl._ref._path.segments[1];
+          referenceObjectsData[key].push(otherEl._fieldsProto);
+        }
+      }
+    }
+    setuserLoading(false);
+  }
 
-      setLoading(false);
+
+  const getFieldsForObject = async()=>{
+    if(window.localStorage.getItem('UserFormData')){
+      setuserLoading(false);
       userFormData = JSON.parse(window.localStorage.getItem("UserFormData"));
       console.log(userFormData);
+      if(userFormData['RefCode']){
+        await getReferences();
+      }
       setuserLoading(false);
     }
     else{
       let tokenData = await auth.currentUser.getIdToken();
-      await axios.post(
+      let resp = await axios.post(
       'http://localhost:5001/shalom-103df/us-central1/app/getFieldsForObject',
       { "objectReference" : 'Objects/TbODR2sSss2kHWhHbBCG',"profileReference":'Profile Object Permissions/IHzlGi3A520RZcTBjUyv' },
       { headers: { 
           'Content-Type': 'application/json',
           'Authorization':  'Bearer '+tokenData
       } }
-      ).then(function(resp){
-        userFormData = {};
-          console.log(resp);
-          for(const element in resp.data){
-            const dataElement = resp.data[element];
-            console.log(dataElement);
-            console.log(dataElement._fieldsProto);
-            if(dataElement._fieldsProto.Type.stringValue == 'Combobox'){
-              dataElement._fieldsProto.Type.stringValue = 'ComboBox';
-            }
-            
-            if(userFormData[dataElement._fieldsProto.Type.stringValue]){
-              userFormData[dataElement._fieldsProto.Type.stringValue].push({
-                  Name:dataElement._fieldsProto.Name.stringValue,
-                  Type:dataElement._fieldsProto.Type.stringValue,
-                  Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
-                  Values:dataElement._fieldsProto.values?dataElement._fieldsProto.values.stringValue:'',
-                  RefObject:dataElement._fieldsProto.RefObject?dataElement._fieldsProto.RefObject.stringValue:''
-              });
-            }
-            else{
-              userFormData[dataElement._fieldsProto.Type.stringValue] = [{
-                Name:dataElement._fieldsProto.Name.stringValue,
-                Type:dataElement._fieldsProto.Type.stringValue,
-                Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
-                Values:dataElement._fieldsProto.values?dataElement._fieldsProto.values.stringValue:'',
-                RefObject:dataElement._fieldsProto.RefObject?dataElement._fieldsProto.RefObject.stringValue:''
-              }];
-            }
+      );
+      userFormData = {};
+      console.log(resp);
+      for(const element in resp.data){
+        const dataElement = resp.data[element];
+        console.log(dataElement);
+        console.log(dataElement._fieldsProto);
+        if(dataElement._fieldsProto.Type.stringValue == 'Combobox'){
+          dataElement._fieldsProto.Type.stringValue = 'ComboBox';
+        }
+        
+        if(userFormData[dataElement._fieldsProto.Type.stringValue]){
+          userFormData[dataElement._fieldsProto.Type.stringValue].push({
+              Name:dataElement._fieldsProto.Name.stringValue,
+              Type:dataElement._fieldsProto.Type.stringValue,
+              Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
+              Values:dataElement._fieldsProto.values?dataElement._fieldsProto.values.stringValue:'',
+              RefObject:dataElement._fieldsProto.RefObject?dataElement._fieldsProto.RefObject.stringValue:''
+          });
+        }
+        else{
+          userFormData[dataElement._fieldsProto.Type.stringValue] = [{
+            Name:dataElement._fieldsProto.Name.stringValue,
+            Type:dataElement._fieldsProto.Type.stringValue,
+            Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
+            Values:dataElement._fieldsProto.values?dataElement._fieldsProto.values.stringValue:'',
+            RefObject:dataElement._fieldsProto.RefObject?dataElement._fieldsProto.RefObject.stringValue:''
+          }];
+        }
 
-          }
-          window.localStorage.setItem("UserFormData", JSON.stringify(userFormData));
-          console.log(userFormData);
-          userDataRetrieved = true;
-          console.log(userFormData)
-          setuserLoading(false);
-      })
-      .catch(function(err){
-          console.log(err);
-          userDataRetrieved = true;
-          setuserLoading(false);
-      });
+      }
+      window.localStorage.setItem("UserFormData", JSON.stringify(userFormData));
+      userDataRetrieved = true;
+      if(userFormData['RefCode']){
+        await getReferences();
+      }
+      setuserLoading(false);
     }
-  }
-  
-
-  const handleChange = async(e) => {
-    
-  }
-  const handleSave = async(e) => {
-    
   }
   
   useEffect(()=>{
@@ -129,7 +157,7 @@ function UserCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { userFormData && userFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} object='Users' goTo='/User' formData={userFormData} />}
+                      { userFormData && userFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{}} referencesObject={referenceObjectsData} object='Users' goTo='/User' formData={userFormData} />}
                     </div>
                   </div>
                 </div>

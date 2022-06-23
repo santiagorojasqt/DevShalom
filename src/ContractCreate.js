@@ -27,10 +27,14 @@ function ContractCreate() {
   if(!loading&& !formData) setLoading(true);
 
   const getReferences = async()=>{
+    referenceObjects = {};
     let tokenData = await auth.currentUser.getIdToken();
     let objectsToGet = [];
     for(const referenceField in  formData['RefCode']){
-      objectsToGet.push({ObjectName:referenceField.RefObject});
+      let data = formData['RefCode'];
+      console.log(data)
+      console.log(data[referenceField]);
+      objectsToGet.push(data[referenceField].RefObject);
     }
     let resp = await axios.post(
       'http://localhost:5001/shalom-103df/us-central1/app/getReferenceObjets',
@@ -41,6 +45,21 @@ function ContractCreate() {
       } }
     );
     console.log(resp);
+    for(const elementData in resp.data){
+      const currenElement = resp.data[elementData];
+      console.log(currenElement);
+      for(const key in currenElement){
+        referenceObjects[key] = [];
+        const nexEl = currenElement[key];
+        console.log(key);
+        console.log(nexEl);
+        for(const arrayMember in nexEl){
+          const otherEl = nexEl[arrayMember];
+          otherEl._fieldsProto['id'] = otherEl._ref._path.segments[0]+'/'+otherEl._ref._path.segments[1];
+          referenceObjects[key].push(otherEl._fieldsProto);
+        }
+      }
+    }
     setLoading(false);
   }
 
@@ -148,7 +167,7 @@ function ContractCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { formData  && formData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{} } object='Contratos' goTo='/Contract' formData={formData} />}
+                      { formData  && formData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{} } referencesObject={referenceObjects} object='Contratos' goTo='/Contract' formData={formData} />}
                     </div>
                   </div>
                 </div>

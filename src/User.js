@@ -38,7 +38,6 @@ function User() {
     ).then(function(resp){
         console.log(resp.data);
         allUsers = resp.data;
-        console.log(allContracts[0].data);
         setLoading(false);
     })
     .catch(function(err){
@@ -86,15 +85,11 @@ function User() {
                       <table className='table thead-light'>
                         <thead>
                           <tr>
-                            <th scope="col">Direccion</th>
-                            <th scope="col">Frecuencia de Envio</th>
-                            <th scope="col">Municipio</th>
-                            <th scope="col">Nombre CC</th>
-                            <th scope="col">Observaciones</th>
-                            <th scope="col">Presupuesto Pedido</th>
-                            <th scope="col">Presupuesto Total</th>
-                            <th scope="col">Transportadora Primaria</th>
-                            <th scope="col">Zona</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">Celular</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Sede</th>
                             <th scope="col">Acciones</th>
                           </tr>
                         </thead>
@@ -102,15 +97,11 @@ function User() {
                           {allUsers && allUsers.map(item => {
                             return (
                               <tr key={item}>
-                                <td scope="row">{ item.data['Frecuencia de Envio'] && item.data ['Frecuencia de Envio'] }</td>
-                                <td scope="row">{ item.data['Direccion'] && item.data ['Direccion'] }</td>
-                                <td scope="row">{ item.data['Municipio'] && item.data ['Municipio'] }</td>
-                                <td scope="row">{ item.data['Nombre CC'] && item.data ['Nombre CC'] }</td>
-                                <td scope="row">{ item.data['Observaciones'] && item.data ['Observaciones'] }</td>
-                                <td scope="row">{ item.data['Presupuesto Pedido'] && item.data ['Presupuesto Pedido'] }</td>
-                                <td scope="row">{ item.data['Presupuesto Total'] && item.data ['Presupuesto Total'] }</td>
-                                <td scope="row">{ item.data['Transportadora Primaria'] && item.data ['Transportadora Primaria']  }</td>
-                                <td scope="row">{ item.data['Zona'] && item.data ['Zona']}</td>
+                                <td scope="row">{ item.data['Nombre'] && item.data ['Nombre'] }</td>
+                                <td scope="row">{ item.data['Telefono'] && item.data ['Telefono'] }</td>
+                                <td scope="row">{ item.data['Celular'] && item.data ['Celular'] }</td>
+                                <td scope="row">{ item.data['Email'] && item.data ['Email'] }</td>
+                                <td scope="row">{ item.data['Sede'] && item.data ['Sede'] }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}
@@ -130,7 +121,7 @@ function User() {
                                       <hr className="dropdown-divider"/>
                                     </li>
                                     <li className="dropdown-item d-flex align-items-center">
-                                      <a className="dropdown-item d-flex align-items-center"  href="users-profile.html">
+                                      <a className="dropdown-item d-flex align-items-center" onClick={() => newUser(item)}>
                                         <i className="bi bi-pencil-fill text-dark"></i>
                                         <span>Modificar</span>
                                       </a>
