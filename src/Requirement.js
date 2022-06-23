@@ -8,16 +8,10 @@ import './public/vendor/remixicon/remixicon.css';
 import './public/vendor/simple-datatables/style.css';
 import './public/css/style.css';
 import ReactTooltip from 'react-tooltip';
-import { useAuth } from "./context/AuthContext";
-import Sidebar from './Sidebar';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { render } from "react-dom";
-import Header from './Header';
-import { Helmet } from 'react-helmet';
-import Footer from './Footer';
-import {auth, functions} from './firebase';
+import {auth} from './firebase';
 import Loading from "./loading";
 import { useNavigate } from 'react-router-dom'
 
@@ -105,19 +99,19 @@ function Requirement() {
                         <tbody>
                           {allRequirements && allRequirements.map(item => {
                             return (
-                              <tr key={item._ref._path.segments[1]}>
-                                <td scope="row">{ item._fieldsProto['Prioridad'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Estado'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Tipo de Entrega'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Nº Pedido'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Remision Asociada'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Entrega'].integerValue }</td>
-                                <td scope="row">{ item._fieldsProto['Tipo'].integerValue }</td>
-                                <td scope="row">{ item._fieldsProto['Zona'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Centro de Costo'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Creacion Aprobacion Despacho Entrega'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Valor Presupuestado'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Valor Ejecutado'].stringValue }</td>
+                              <tr key={item}>
+                                <td scope="row">{ item.data['Prioridad'] && item.data['Prioridad']  }</td>
+                                <td scope="row">{ item.data['Estado'] && item.data['Estado']  }</td>
+                                <td scope="row">{ item.data['Tipo de Entrega'] && item.data['Tipo de Entrega']  }</td>
+                                <td scope="row">{ item.data['Nº Pedido'] && item.data['Nº Pedido']  }</td>
+                                <td scope="row">{ item.data['Remision Asociada'] && item.data['Remision Asociada']  }</td>
+                                <td scope="row">{ item.data['Entrega'] && item.data['Entrega']  }</td>
+                                <td scope="row">{ item.data['Tipo de Pedido'] && item.data['Tipo de Pedido']  }</td>
+                                <td scope="row">{ item.data['Zona'] && item.data['Zona']  }</td>
+                                <td scope="row">{ item.data['Centro de Costo'] && item.data['Centro de Costo']  }</td>
+                                <td scope="row">{ item.data['Creacion Aprobacion Despacho Entrega'] && item.data['Creacion Aprobacion Despacho Entrega']  }</td>
+                                <td scope="row">{ item.data['Presupuesto Total'] && item.data['Valor Presupuestado']  }</td>
+                                <td scope="row">{ item.data['Valor Ejecutado'] && item.data['Valor Ejecutado']  }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}

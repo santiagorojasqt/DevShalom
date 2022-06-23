@@ -22,10 +22,31 @@ let dataRetrieved = false;
 let title;
 let formData;
 let location;
+let referenceObjects;
 function ContractCreate() {
   const [loading,setLoading] = useState(false);
   location = useLocation()
   if(!loading&& !formData) setLoading(true);
+
+  const getReferences = async()=>{
+    let tokenData = await auth.currentUser.getIdToken();
+    let objectsToGet = [];
+    for(const referenceField in  formData['RefCode']){
+      objectsToGet.push({ObjectName:referenceField.RefObject});
+    }
+    let resp = await axios.post(
+      'http://localhost:5001/shalom-103df/us-central1/app/getReferenceObjets',
+      { "objectsToGet" :  objectsToGet},
+      { headers: { 
+          'Content-Type': 'application/json',
+          'Authorization':  'Bearer '+tokenData
+      } }
+    );
+    console.log(resp);
+    setLoading(false);
+  }
+
+
   const getFieldsForObject = async()=>{
     
     if(window.localStorage.getItem('ContractFormData')){
@@ -38,58 +59,57 @@ function ContractCreate() {
     }
     else{
       let tokenData = await auth.currentUser.getIdToken();
-      await axios.post(
+      let resp = await  axios.post(
       'http://localhost:5001/shalom-103df/us-central1/app/getFieldsForObject',
       { "objectReference" : 'Objects/BIbeb7Pqiera9YhdaCAs',"profileReference":'Profile Object Permissions/GcBdKKnHZx1i2vivFToS' },
       { headers: { 
           'Content-Type': 'application/json',
           'Authorization':  'Bearer '+tokenData
       } }
-      ).then(function(resp){
-          formData = {};
-          console.log(resp);
-          for(const element in resp.data){
-            const dataElement = resp.data[element];
-            console.log(dataElement);
-            if(dataElement== null) continue;
-            console.log(dataElement._fieldsProto);
-            if(dataElement._fieldsProto.Type.stringValue == 'Combobox'){
-              dataElement._fieldsProto.Type.stringValue = 'ComboBox';
-            }
-            
-            if(formData[dataElement._fieldsProto.Type.stringValue]){
-              formData[dataElement._fieldsProto.Type.stringValue].push({
-                  Name:dataElement._fieldsProto.Name.stringValue,
-                  Type:dataElement._fieldsProto.Type.stringValue,
-                  Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
-                  Values:dataElement._fieldsProto.values?dataElement._fieldsProto.values.stringValue:'',
-                  RefObject:dataElement._fieldsProto.RefObject?dataElement._fieldsProto.RefObject.stringValue:''
-              });
-            }
-            else{
-              formData[dataElement._fieldsProto.Type.stringValue] = [{
-                Name:dataElement._fieldsProto.Name.stringValue,
-                Type:dataElement._fieldsProto.Type.stringValue,
-                Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
-                Values:dataElement._fieldsProto.values?dataElement._fieldsProto.values.stringValue:'',
-                RefObject:dataElement._fieldsProto.RefObject?dataElement._fieldsProto.RefObject.stringValue:''
-              }];
-            }
-
-          }
-          window.localStorage.setItem("ContractFormData", JSON.stringify(formData));
-          console.log(formData);
-          dataRetrieved = true;
-          console.log(formData)
-          setLoading(false);
-      })
-      .catch(function(err){
-          console.log(err);
-          dataRetrieved = true;
-          setLoading(false);
-      });
+      );
+      formData = {};
+      console.log(resp);
+      for(const element in resp.data){
+        const dataElement = resp.data[element];
+        console.log(dataElement);
+        if(dataElement== null) continue;
+        console.log(dataElement._fieldsProto);
+        if(dataElement._fieldsProto.Type.stringValue == 'Combobox'){
+          dataElement._fieldsProto.Type.stringValue = 'ComboBox';
+        }
+        
+        if(formData[dataElement._fieldsProto.Type.stringValue]){
+          formData[dataElement._fieldsProto.Type.stringValue].push({
+              Name:dataElement._fieldsProto.Name.stringValue,
+              Type:dataElement._fieldsProto.Type.stringValue,
+              Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
+              Values:dataElement._fieldsProto.values?dataElement._fieldsProto.values.stringValue:'',
+              RefObject:dataElement._fieldsProto.RefObject?dataElement._fieldsProto.RefObject.stringValue:''
+          });
+        }
+        else{
+          formData[dataElement._fieldsProto.Type.stringValue] = [{
+            Name:dataElement._fieldsProto.Name.stringValue,
+            Type:dataElement._fieldsProto.Type.stringValue,
+            Length:dataElement._fieldsProto.Length?dataElement._fieldsProto.Length.integerValue:'',
+            Values:dataElement._fieldsProto.values?dataElement._fieldsProto.values.stringValue:'',
+            RefObject:dataElement._fieldsProto.RefObject?dataElement._fieldsProto.RefObject.stringValue:''
+          }];
+        }
+        if(formData['RefCode']){
+          await getReferences();
+        }
+      }
+      
+      window.localStorage.setItem("ContractFormData", JSON.stringify(formData));
+      console.log(formData);
+      dataRetrieved = true;
+      console.log(formData)
+      setLoading(false);
     }
   }
+
+  
   
 
   const handleChange = async(e) => {

@@ -9,8 +9,6 @@ import Select from "react-select";
 
 let props ={};
 function Form(props) {
-  console.log(props.formData);
-  console.log(values.default['Municipios']);
   const [error, setError] = useState("");
   let [objectInfo, setObjectInfo] = useState({
   });
@@ -27,21 +25,14 @@ function Form(props) {
     props.values.data[name]=value;
     
   }
-    
   
   const handleSave = async(e) => {
     e.preventDefault();
     if(Object.keys(objectInfo).length<=0){
-      console.log('empty');
       setError('Pofavor digita los campos');
     }
     else{
       let tokenData = await auth.currentUser.getIdToken();
-      if(props.values && props.values.id)
-      {
-        console.log(props.values.id)
-      }
-      console.log(props.values);
       setLoading(true);
       await axios.post(
         'http://localhost:5001/shalom-103df/us-central1/app/createObject',
@@ -51,16 +42,13 @@ function Form(props) {
             'Authorization':  'Bearer '+tokenData
         } }
         ).then(function(resp){
-            console.log(resp.data);
             setLoading(false);
             goToBranch();
         })
         .catch(function(err){
-            console.log(err);
             setLoading(false);
         });
       setError('');
-      console.log(objectInfo);
     }
   }
   const goToBranch = async()=>{
@@ -98,58 +86,63 @@ function Form(props) {
                 );
             })}
             {props.formData && props.formData['Number'] && props.formData['Number'].map(item => {
-                return (
-                  <div className="form-group col-sm-6">
-                    <label for="inputText" className="col-form-label">{item.Name}</label>
-                    <div className="col-sm-10">
-                      <input maxLength={item.Length}  aria-current={item} required type="number" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
-                    </div>
+              return (
+                <div className="form-group col-sm-6">
+                  <label for="inputText" className="col-form-label">{item.Name}</label>
+                  <div className="col-sm-10">
+                    <input maxLength={item.Length} aria-current={item} required type="number" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                   </div>
-                );
+                </div>
+              );
             })}
 
             {props.formData && props.values.data &&  props.formData['Date'] && props.formData['Date'].map(item => {
-                return (
-                  <div className="form-group col-sm-6">
-                    <label for="inputText" className="col-form-label">{item.Name}</label>
-                    <div className="col-sm-10">
-                      <input aria-current={item} required type="text" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
-                    </div>
+              return (
+                <div className="form-group col-sm-6">
+                  <label for="inputText" className="col-form-label">{item.Name}</label>
+                  <div className="col-sm-10">
+                    <input aria-current={item} required type="text" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                   </div>
-                );
+                </div>
+              );
             })}
 
             {props.formData && !props.values.data &&  props.formData['Date'] && props.formData['Date'].map(item => {
-                return (
-                  <div className="form-group col-sm-6">
-                    <label for="inputText" className="col-form-label">{item.Name}</label>
-                    <div className="col-sm-10">
-                      <input aria-current={item} required type="text" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
-                    </div>
+              return (
+                <div className="form-group col-sm-6">
+                  <label for="inputText" className="col-form-label">{item.Name}</label>
+                  <div className="col-sm-10">
+                    <input aria-current={item} required type="text" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                   </div>
-                );
+                </div>
+              );
             })}
 
             {props.formData && props.formData['Media'] && props.formData['Media'].map(item => {
-                return (
-                  <div className="form-group col-sm-6">
-                    <label for="inputText" className="col-form-label">{item.Name}</label>
-                    <div className="col-sm-10">
-                      <input aria-current={item} required type="date" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
-                    </div>
+              return (
+                <div className="form-group col-sm-6">
+                  <label for="inputText" className="col-form-label">{item.Name}</label>
+                  <div className="col-sm-10">
+                    <input aria-current={item} required type="date" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
                   </div>
-                );
+                </div>
+              );
             })}
 
-            {props.formData && props.formData['Reference'] && props.formData['Reference'].map(item => {
-                return (
-                  <div className="form-group col-sm-6">
-                    <label for="inputText" className="col-form-label">{item.Name}</label>
-                    <div className="col-sm-10">
-                      <input aria-current={item} required type="Text" value={props.values.data && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-control"/>
-                    </div>
+            {props.formData && props.formData['RefCode'] && props.formData['RefCode'].map(item => {
+              return (
+                <div className="form-group col-sm-6">
+                  <label for="inputText" className="col-form-label">{item.Name}</label>
+                  <div className="col-sm-10">
+                    <select aria-current={item} required value={props.values.data && props.values.data[item.Name] && props.values.data[item.Name]} name={item.Name} id={item.Name+item.Type} onChange={handleChange} className="form-select">
+                      <option>Selecciona una opción</option>
+                      {props.referencesObject && props.referencesObject[item.RefObject].map((option) => (
+                        <option value={option.id}>{option.Nombre.stringValue}</option>
+                      ))}
+                    </select>
                   </div>
-                );
+                </div>
+              );
             })}
             
           </div>

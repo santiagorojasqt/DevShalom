@@ -101,7 +101,7 @@ function Contract() {
                         </thead>
                         <tbody>
                           {allContracts && allContracts.map(item => {
-                            return (
+                            return ( 
                               <tr key={item}>
                                 <td scope="row">{ item.data['ID Contrato'] && item.data['ID Contrato'] }</td>
                                 <td scope="row">{ item.data['Referencia'] && item.data['Referencia'] }</td>
