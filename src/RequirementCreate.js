@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import {auth} from './firebase';
 import Loading from "./loading";
 import Form from './Form';
-import { useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 
 let requirementDataRetrieved = false;
 let title;
@@ -23,8 +23,9 @@ let referenceObjectsData;
 function RequirementCreate() {
   const [requirementLoading,setrequirementLoading] = useState(false);
   location = useLocation()
-
+  
   const getReferences = async()=>{
+    
     referenceObjectsData = {};
     let tokenData = await auth.currentUser.getIdToken();
     let objectsToGet = [];
@@ -118,6 +119,8 @@ function RequirementCreate() {
       setrequirementLoading(false);
     }
   }
+
+  
   
   useEffect(()=>{
     if(!requirementDataRetrieved){
@@ -152,6 +155,7 @@ function RequirementCreate() {
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
                       { requirementFormData && requirementFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Requirement' object='Requerimientos' referencesObject={referenceObjectsData} formData={requirementFormData} />}
+                      
                     </div>
                   </div>
                 </div>

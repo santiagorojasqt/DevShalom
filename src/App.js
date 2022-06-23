@@ -37,6 +37,7 @@ import Producto_VS_Entregas from './Producto_VS_Entregas';
 import Reports from './Reports';
 import AjustService from './AjustService';
 import ConsultBudget from './ConsultBudget';
+import AddServiceToRequirement from './addServiceToRequirement';
 
 
 
@@ -120,6 +121,11 @@ function App() {
               <Route exact path="/Service/Create" element={
                 <ProtectedRoute>
                   <ServiceCreate />
+                </ProtectedRoute>
+              } />
+              <Route exact path="/Service/add" element={
+                <ProtectedRoute>
+                  <AddServiceToRequirement />
                 </ProtectedRoute>
               } />
               <Route exact path="/Requirement" element={

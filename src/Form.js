@@ -5,6 +5,7 @@ import axios from "axios";
 import { auth } from "./firebase";
 import Loading from "react-loading";
 import * as values from './values';
+import addServiceToRequirement from "./addServiceToRequirement";
 function Form(props) {
   const [error, setError] = useState("");
   let [objectInfo, setObjectInfo] = useState({
@@ -41,6 +42,7 @@ function Form(props) {
         } }
         ).then(function(resp){
             console.log(resp);
+
             setLoading(false);
             goToBranch();
         })
@@ -50,9 +52,46 @@ function Form(props) {
       setError('');
     }
   }
+  const addService = async(e)=>{
+    e.preventDefault();
+    if(Object.keys(objectInfo).length<=0){
+      setError('Pofavor digita los campos');
+    }
+    else{
+      let tokenData = await auth.currentUser.getIdToken();
+      setLoading(true);
+      console.log(objectInfo);
+      await axios.post(
+        'http://localhost:5001/shalom-103df/us-central1/app/createObject',
+        { collection: props.object, values:objectInfo},
+        { headers: { 
+            'Content-Type': 'application/json',
+            'Authorization':  'Bearer '+tokenData
+        } }
+        ).then(function(resp){
+            console.log(resp);
+            setLoading(false);
+            addServiceRoute(resp)
+        })
+        .catch(function(err){
+            setLoading(false);
+        });
+      setError('');
+    }
+  }
+
+  const addServiceRoute =(item)=>{
+    console.log(item.id);
+    console.log(item);
+    navigate('/Service/add',{state:item},{ replace: true })
+  }
+
+  
+
   const goToBranch = async()=>{
     navigate(props.goTo);
   }
+
   return(
     <form>
        {error && <Alert message={error} />}
@@ -146,11 +185,22 @@ function Form(props) {
             
           </div>
         </div>
-        <div className="form-group col-sm-6">
-          <button type="submit" className="btn btn-outline-dark float-right" onClick={goToBranch}>Cancel</button>  
-        </div>
-        <div className="form-group col-sm-6">
-          <button type="submit" onClick={handleSave} className="btn btn-primary float-right">Guardar</button>
+        <br/>
+        <br/>
+        <br/>
+        <div className="row">
+            <div className="form-group col-sm-3">
+              <button type="submit" className="btn btn-outline-dark " onClick={goToBranch}>Cancel</button>  
+            </div>
+            <div className="form-group col-sm-3">
+              <button type="submit" onClick={handleSave} className="btn btn-primary ">Guardar</button>
+            </div>
+            { props.object && props.object == 'Requerimientos' &&
+              <div className="form-group col-sm-3">
+                <button type="submit" onClick={addService} className="btn btn-primary ">
+                  <span>Guardar y Adicionar servicios</span></button>
+              </div>
+          }
         </div>
       </form>
   )
