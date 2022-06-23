@@ -104,11 +104,10 @@ function BranchCreate() {
   
   useEffect(()=>{
     if(!branchDataRetrieved){
-      branchDataRetrieved = true;
       getFieldsForObject();
       console.log('fired once');
     }
-  },[]);
+  },[branchLoading]);
 
   if(branchLoading){
     return <Loading  type="String" color="#000000" />;
@@ -124,7 +123,7 @@ function BranchCreate() {
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-                  <li className="breadcrumb-item">Pedidos</li>
+                  <li className="breadcrumb-item">CC</li>
                   <li className="breadcrumb-item active">Sede</li>
                 </ol>
               </nav>
@@ -136,7 +135,7 @@ function BranchCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { branchFormData && branchFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Branch' object='Sede' formData={branchFormData} />}
+                      { branchFormData && branchFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{}} goTo='/Branch' object='Sede' formData={branchFormData} />}
                     </div>
                   </div>
                 </div>

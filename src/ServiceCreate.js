@@ -23,19 +23,14 @@ let title;
 let serviceFormData;
 let location;
 function ServiceCreate() {
-  console.log('mounted');
-  console.log('mounted');
-  
   const [serviceLoading,setserviceLoading] = useState(false);
-  console.log('mounted');
   location = useLocation()
-  console.log('mounted');
-  const navigate2 = useNavigate()
-  console.log('mounted');
-  
+  if(!loading&& !formData) setserviceLoading(true);
   const getFieldsForObject = async()=>{
-    setserviceLoading(true);
+  
     if(window.localStorage.getItem('ServiceFormData')){
+
+      setLoading(false);
       serviceFormData = JSON.parse(window.localStorage.getItem("ServiceFormData"));
       console.log(serviceFormData);
       setserviceLoading(false);
@@ -108,7 +103,7 @@ function ServiceCreate() {
       getFieldsForObject();
       console.log('fired once');
     }
-  },[]);
+  },[serviceLoading]);
 
   if(serviceLoading){
     return <Loading  type="String" color="#000000" />;
@@ -134,7 +129,7 @@ function ServiceCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { serviceFormData && serviceFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} object='Servicios' goTo='/Service' formData={serviceFormData} />}
+                      { serviceFormData && serviceFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{}} object='Servicios' goTo='/Service' formData={serviceFormData} />}
                     </div>
                   </div>
                 </div>

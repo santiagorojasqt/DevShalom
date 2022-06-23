@@ -8,14 +8,10 @@ import './public/vendor/remixicon/remixicon.css';
 import './public/vendor/simple-datatables/style.css';
 import './public/css/style.css';
 import ReactTooltip from 'react-tooltip';
-import { useAuth } from "./context/AuthContext";
 import Sidebar from './Sidebar';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { render } from "react-dom";
-import Header from './Header';
-import { Helmet } from 'react-helmet';
 import Footer from './Footer';
 import {auth, functions} from './firebase';
 import Loading from "./loading";
@@ -43,6 +39,7 @@ function Service() {
     ).then(function(resp){
         console.log(resp.data);
         allServices = resp.data;
+        console.log(allContracts[0].data);
         setLoading(false);
     })
     .catch(function(err){
@@ -52,8 +49,9 @@ function Service() {
     });
   }
 
-  const newService = async()=>{
-    navigate('/Service/Create')
+  const newService =(item)=>{
+    console.log(item.id);
+    navigate('/Service/Create',{state:item},{ replace: true })
   }
   useEffect(() => {
     getAllServices();
@@ -105,18 +103,18 @@ function Service() {
                         <tbody>
                           {allServices && allServices.map(item => {
                             return (
-                              <tr key={item._ref._path.segments[1]}>
-                                <td scope="row">{ item._fieldsProto['ID'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Codigo'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Codigo 2'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Linea'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Descripcion'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Unidad de Medida'].integerValue }</td>
-                                <td scope="row">{ item._fieldsProto['Detalle'].integerValue }</td>
-                                <td scope="row">{ item._fieldsProto['Precio'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['IVA'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Valor con IVA'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Cantidad Mensual'].stringValue }</td>
+                              <tr key={item}>
+                                <td scope="row">{ item.data['Codigo'] && item.data['Codigo'] }</td>
+                                <td scope="row">{ item.data['ID'] && item.data['ID'] }</td>
+                                <td scope="row">{ item.data['Codigo 2'] && item.data['Codigo 2'] }</td>
+                                <td scope="row">{ item.data['Linea'] && item.data['Linea'] }</td>
+                                <td scope="row">{ item.data['Descripcion'] && item.data['Descripcion'] }</td>
+                                <td scope="row">{ item.data['Unidad de Medida'] && item.data['Unidad de Medida'] }</td>
+                                <td scope="row">{ item.data['Detalle'] && item.data['Detalle'] }</td>
+                                <td scope="row">{ item.data['Precio'] && item.data['Precio'] }</td>
+                                <td scope="row">{ item.data['IVA'] && item.data['IVA'] }</td>
+                                <td scope="row">{ item.data['Valor con IVA'] && item.data['Valor con IVA'] }</td>
+                                <td scope="row">{ item.data['Cantidad Mensual'] && item.data['Cantidad Mensual'] }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}

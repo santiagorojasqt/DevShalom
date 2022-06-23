@@ -18,6 +18,8 @@ import {auth} from './firebase';
 import Loading from "./loading";
 import { useNavigate } from 'react-router-dom'
 
+
+
 let allContracts = null
 function Contract() {
   const navigate = useNavigate()
@@ -45,8 +47,6 @@ function Contract() {
         setLoading(false);
     });
   }
-
-
 
   const newContract =(item)=>{
     console.log(item.id);

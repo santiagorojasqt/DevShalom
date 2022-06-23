@@ -20,25 +20,21 @@ import { useNavigate,useLocation } from 'react-router-dom'
 
 let deliveryDataRetrieved = false;
 let title;
-let deliveryFormData;
+let formData;
 let location;
 function DeliveryCreate() {
-  console.log('mounted');
-  console.log('mounted');
-  
-  const [deliveryLoading,setdeliveryLoading] = useState(false);
-  console.log('mounted');
+  const [loading,setLoading] = useState(false);
   location = useLocation()
-  console.log('mounted');
-  const navigate2 = useNavigate()
-  console.log('mounted');
-  
+  if(!loading&& !formData) setLoading(true);
   const getFieldsForObject = async()=>{
-    setdeliveryLoading(true);
+    
     if(window.localStorage.getItem('DeliveryFormData')){
-      deliveryFormData = JSON.parse(window.localStorage.getItem("DeliveryFormData"));
-      console.log(deliveryFormData);
-      setdeliveryLoading(false);
+      
+      setLoading(false);
+      formData = JSON.parse(window.localStorage.getItem("DeliveryFormData"));
+      console.log(formData);
+      dataRetrieved = true;
+      setLoading(false);
     }
     else{
       let tokenData = await auth.currentUser.getIdToken();
@@ -55,6 +51,7 @@ function DeliveryCreate() {
           for(const element in resp.data){
             const dataElement = resp.data[element];
             console.log(dataElement);
+            if(dataElement== null) continue;
             console.log(dataElement._fieldsProto);
             if(dataElement._fieldsProto.Type.stringValue == 'Combobox'){
               dataElement._fieldsProto.Type.stringValue = 'ComboBox';
@@ -104,11 +101,10 @@ function DeliveryCreate() {
   
   useEffect(()=>{
     if(!deliveryDataRetrieved){
-      deliveryDataRetrieved = true;
       getFieldsForObject();
       console.log('fired once');
     }
-  },[]);
+  },[deliveryLoading]);
 
   if(deliveryLoading){
     return <Loading  type="String" color="#000000" />;
@@ -134,7 +130,7 @@ function DeliveryCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { deliveryFormData && deliveryFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} goTo='/Delivery' object='Entregas' formData={deliveryFormData} />}
+                      { deliveryFormData && deliveryFormData['Text'] &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{}} goTo='/Delivery' object='Entrega' formData={deliveryFormData} />}
                     </div>
                   </div>
                 </div>

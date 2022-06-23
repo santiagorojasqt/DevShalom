@@ -8,18 +8,18 @@ import './public/vendor/remixicon/remixicon.css';
 import './public/vendor/simple-datatables/style.css';
 import './public/css/style.css';
 import ReactTooltip from 'react-tooltip';
-import { useAuth } from "./context/AuthContext";
 import Sidebar from './Sidebar';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { render } from "react-dom";
-import Header from './Header';
 import { Helmet } from 'react-helmet';
-import Footer from './Footer';
 import {auth, functions} from './firebase';
 import Loading from "./loading";
 import { useNavigate } from 'react-router-dom'
+
+
+
 let allDeliveries = null
 function Delivery() {
   const navigate = useNavigate()
@@ -38,6 +38,7 @@ function Delivery() {
     ).then(function(resp){
         console.log(resp.data);
         allDeliveries = resp.data;
+        console.log(allDeliveries[0].data);
         setLoading(false);
     })
     .catch(function(err){
@@ -47,12 +48,14 @@ function Delivery() {
     });
   }
 
-  const newDelivery = async()=>{
-    navigate('/Delivery/Create')
+  const newDelivery =(item)=>{
+    console.log(item.id);
+    navigate('/Delivery/Create',{state:item},{ replace: true })
   }
   useEffect(() => {
     getAllDeliveries();
   }, []);
+
   if(loading){
     return <Loading  type="String" color="#000000" />;
   }
@@ -94,12 +97,12 @@ function Delivery() {
                         <tbody>
                           {allDeliveries && allDeliveries.map(item => {
                             return (
-                              <tr key={item._ref._path.segments[1]}>
-                                <td scope="row">{ item._fieldsProto['ID Entrega'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['ID Contrato'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Codigo Entrega'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Descripcion'].stringValue }</td>
-                                <td scope="row">{ item._fieldsProto['Estado'].stringValue }</td>
+                              <tr key={item}>
+                                <td scope="row">{ item.data['ID Contrato'] && item.data['ID Contrato'] }</td>
+                                <td scope="row">{ item.data['Codigo Entrega'] && item.data['Codigo Entrega'] }</td>
+                                <td scope="row">{ item.data['ID Entrega'] && item.data['ID Entrega'] }</td>
+                                <td scope="row">{ item.data['Descripcion'] && item.data['Descripcion'] }</td>
+                                <td scope="row">{ item.data['Estado'] && item.data['Estado'] }</td>
                                 <td scope="row">
                                 <a className="nav-link nav-icon"
                                     onMouseEnter={() => showTooltip(true)}
