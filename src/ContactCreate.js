@@ -1,4 +1,4 @@
-import './public/css/style.css';
+ import './public/css/style.css';
 import './public/vendor/bootstrap/css/bootstrap.min.css';
 import './public/vendor/bootstrap-icons/bootstrap-icons.css';
 import './public/vendor/boxicons/css/boxicons.min.css';
@@ -18,28 +18,19 @@ import { useNavigate,useLocation } from 'react-router-dom'
 
 let dataRetrieved = false;
 let title;
-let buttonText;
 let formData;
 let location;
 function ContactCreate() {
-  console.log('mounted');
-  console.log('mounted');
-  
   const [loading,setLoading] = useState(false);
-  console.log('mounted');
   location = useLocation()
-  console.log('mounted');
-  const navigate2 = useNavigate()
-  console.log('mounted');
-  
   const getFieldsForObject = async()=>{
-    setLoading(true);
-    let branch= location.state;
+    
     if(window.localStorage.getItem('ContactFormData')){
+      
+      setLoading(false);
       formData = JSON.parse(window.localStorage.getItem("ContactFormData"));
       console.log(formData);
       dataRetrieved = true;
-      console.log(formData);
       setLoading(false);
     }
     else{
@@ -57,6 +48,7 @@ function ContactCreate() {
           for(const element in resp.data){
             const dataElement = resp.data[element];
             console.log(dataElement);
+            if(dataElement== null) continue;
             console.log(dataElement._fieldsProto);
             if(dataElement._fieldsProto.Type.stringValue == 'Combobox'){
               dataElement._fieldsProto.Type.stringValue = 'ComboBox';
@@ -110,7 +102,7 @@ function ContactCreate() {
       getFieldsForObject();
       console.log('fired once');
     }
-  },[]);
+  },[loading]);
 
   if(loading){
     return <Loading  type="String" color="#000000" />;
@@ -124,7 +116,7 @@ function ContactCreate() {
               <nav>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-                  <li className="breadcrumb-item">Pedidos</li>
+                  <li className="breadcrumb-item">CC</li>
                   <li className="breadcrumb-item active">Contactos</li>
                 </ol>
               </nav>
@@ -136,7 +128,7 @@ function ContactCreate() {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="card-title">{title}</h5>
-                      { formData  &&  <Form values={location.state &&  location.state!== typeof undefined?location.state._fieldsProto:{}} object='Contactos' goTo='/Contact' formData={formData} />}
+                      { formData  &&  <Form values={location.state &&  location.state!== typeof undefined?location.state:{}} object='Contactos' goTo='/Contact' formData={formData} />}
                     </div>
                   </div>
                 </div>

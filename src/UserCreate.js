@@ -23,19 +23,14 @@ let title;
 let userFormData;
 let location;
 function UserCreate() {
-  console.log('mounted');
-  console.log('mounted');
-  
   const [userLoading,setuserLoading] = useState(false);
-  console.log('mounted');
   location = useLocation()
-  console.log('mounted');
-  const navigate2 = useNavigate()
-  console.log('mounted');
-  
+  if(!loading&& !formData) setuserLoading(true);
   const getFieldsForObject = async()=>{
-    setuserLoading(true);
+  
     if(window.localStorage.getItem('UserFormData')){
+
+      setLoading(false);
       userFormData = JSON.parse(window.localStorage.getItem("UserFormData"));
       console.log(userFormData);
       setuserLoading(false);
